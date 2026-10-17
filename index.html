@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管工计算题库 · 30 题闯关</title>
+<style>
+:root{
+  --bg:#f4f6fa; --card:#ffffff; --ink:#0f1b2d; --ink2:#4a5a72; --ink3:#8a97ab;
+  --line:#e3e8f0; --line2:#eef1f6;
+  --brand:#1e5eff; --brand2:#0a3fd6; --brand-soft:#e8efff;
+  --green:#0f9f6e; --green-soft:#e6f7f0;
+  --amber:#b7791f; --amber-soft:#fdf4e3;
+  --red:#d64545; --red-soft:#fdeceb;
+  --violet:#6d48e5; --violet-soft:#efeaff;
+  --radius:16px; --shadow:0 1px 2px rgba(16,32,64,.05),0 10px 28px rgba(16,32,64,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1200px 500px at 80% -10%,#e7edff 0%,transparent 60%),
+             radial-gradient(900px 500px at -10% 0%,#eafaf4 0%,transparent 55%),var(--bg);
+  color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+button,input,textarea{font-family:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 80px}
+
+/* ---------- 顶栏 ---------- */
+.top{display:flex;align-items:center;gap:14px;padding:6px 2px 18px;flex-wrap:wrap}
+.mark{width:44px;height:44px;border-radius:13px;flex:0 0 44px;background:linear-gradient(135deg,#1e5eff,#6d48e5);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;letter-spacing:.5px;
+  box-shadow:0 8px 20px rgba(30,94,255,.28)}
+.brand h1{font-size:19px;margin:0;letter-spacing:.3px}
+.brand p{margin:3px 0 0;font-size:12.5px;color:var(--ink3)}
+.grow{flex:1}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:9px 14px;
+  font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap}
+.btn:hover{border-color:#c6d2e6;transform:translateY(-1px)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 8px 20px rgba(30,94,255,.22)}
+.btn.primary:hover{background:var(--brand2)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 10px;font-size:12px;border-radius:9px}
+
+/* ---------- 头图 ---------- */
+.hero{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-bottom:18px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero-main{padding:24px 26px;position:relative;overflow:hidden}
+.hero-main:after{content:"";position:absolute;right:-60px;top:-70px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,#dbe6ff 0%,transparent 70%);pointer-events:none}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--brand);
+  background:var(--brand-soft);border-radius:999px;padding:5px 11px;letter-spacing:.4px}
+.hero-main h2{font-size:28px;line-height:1.25;margin:14px 0 8px;letter-spacing:.2px}
+.hero-main h2 em{font-style:normal;color:var(--brand)}
+.hero-main p{margin:0;color:var(--ink2);font-size:13.5px;line-height:1.75;max-width:64ch}
+.metrics{display:flex;gap:26px;margin-top:18px;flex-wrap:wrap}
+.metric b{display:block;font-size:23px;letter-spacing:.3px}
+.metric span{font-size:12px;color:var(--ink3)}
+.hero-side{padding:20px;display:flex;flex-direction:column;gap:12px}
+.today{font-size:12px;color:var(--ink3);display:flex;justify-content:space-between;align-items:center}
+.ring-wrap{display:flex;align-items:center;gap:18px}
+.ring{position:relative;width:104px;height:104px;flex:0 0 104px;display:grid;place-items:center}
+.ring svg{position:absolute;inset:0}
+.ring i{position:relative;width:82px;height:82px;border-radius:50%;background:var(--card);display:flex;
+  align-items:center;justify-content:center;flex-direction:column;text-align:center;font-style:normal}
+.ring b{font-size:20px;line-height:1}
+.ring small{font-size:10.5px;color:var(--ink3);margin-top:3px;display:block}
+.ring-stats{font-size:12.5px;color:var(--ink2);line-height:1.9}
+.ring-stats b{color:var(--ink)}
+.dots{display:grid;grid-template-columns:repeat(15,1fr);gap:5px;margin-top:4px}
+.dot{height:7px;border-radius:3px;background:var(--line2)}
+.dot.ok{background:var(--green)} .dot.bad{background:var(--red)} .dot.done{background:#c3cfe4}
+
+/* ---------- 标签页 ---------- */
+.tabs{display:flex;gap:6px;margin:22px 0 16px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:0;background:transparent;padding:11px 15px;font-size:13.5px;color:var(--ink2);cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-weight:600}
+.tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+.tab .n{font-size:11px;background:var(--line2);color:var(--ink2);border-radius:999px;padding:1px 7px;margin-left:6px}
+.tab.on .n{background:var(--brand-soft);color:var(--brand)}
+.view{display:none} .view.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ---------- 筛选 ---------- */
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.flabel{font-size:12px;color:var(--ink3);width:42px;flex:0 0 42px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:12.5px;
+  color:var(--ink2);cursor:pointer;transition:.15s;display:inline-flex;gap:6px;align-items:center}
+.chip:hover{border-color:#c6d2e6;color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on .c{color:rgba(255,255,255,.75)}
+.chip .c{font-size:11px;color:var(--ink3)}
+.chip.d0.on{background:#0f9f6e;border-color:#0f9f6e}
+.chip.d1.on{background:#b7791f;border-color:#b7791f}
+.chip.d2.on{background:#d64545;border-color:#d64545}
+.fmeta{margin-left:auto;font-size:12px;color:var(--ink3)}
+
+/* ---------- 题目卡 ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;grid-auto-rows:2px;align-items:start}
+@media(max-width:960px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px 18px 14px;display:flex;flex-direction:column;gap:11px;position:relative;transition:.18s}
+.card:hover{box-shadow:0 2px 4px rgba(16,32,64,.05),0 14px 34px rgba(16,32,64,.09)}
+.card.done-ok{border-left:3px solid var(--green)}
+.card.done-bad{border-left:3px solid var(--red)}
+.card-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qid{font-size:12px;font-weight:800;color:var(--ink2);letter-spacing:.4px}
+.pill{font-size:11px;font-weight:700;border-radius:6px;padding:3px 7px;letter-spacing:.2px}
+.pill.A{background:#e8f1ff;color:#1e5eff} .pill.B{background:#efeaff;color:#6d48e5}
+.pill.C{background:#e6f7f0;color:#0f9f6e} .pill.D{background:#fdf4e3;color:#a7651b}
+.pill.E{background:#fdeaf3;color:#c02a72}
+.pill.ind{background:#eef3f0;color:#3d6b5b;border:1px solid #d8e6de}
+.pill.lv0{background:var(--green-soft);color:var(--green)} .pill.lv1{background:var(--amber-soft);color:var(--amber)}
+.pill.lv2{background:var(--red-soft);color:var(--red)}
+.star{margin-left:auto;border:0;background:transparent;cursor:pointer;font-size:16px;line-height:1;color:#cfd8e6;padding:2px}
+.star.on{color:#f0b429}
+.scene{font-size:13px;color:var(--ink2);background:#f8fafd;border:1px dashed var(--line);border-radius:10px;
+  padding:10px 12px;line-height:1.75}
+.stem{font-size:15.2px;line-height:1.85;font-weight:600;letter-spacing:.1px}
+.ansrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ansrow input{flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13px;
+  background:#fbfcfe;color:var(--ink);outline:none;transition:.15s}
+.ansrow input:focus{border-color:var(--brand);background:#fff;box-shadow:0 0 0 3px rgba(30,94,255,.1)}
+.verdict{font-size:12px;font-weight:700;display:none;align-items:center;gap:5px;padding:5px 9px;border-radius:8px}
+.verdict.ok{display:inline-flex;background:var(--green-soft);color:var(--green)}
+.verdict.bad{display:inline-flex;background:var(--red-soft);color:var(--red)}
+.ops{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.reveal{border:1px dashed #c9d6ea;background:#fff;color:var(--brand);border-radius:9px;padding:7px 11px;font-size:12px;cursor:pointer}
+.reveal:hover{background:var(--brand-soft)}
+.selfcheck{border:0;background:transparent;color:var(--ink3);font-size:11.5px;cursor:pointer;text-decoration:underline dotted}
+.detail{display:none;border-top:1px solid var(--line2);padding-top:12px;margin-top:2px;flex-direction:column;gap:12px}
+.detail.on{display:flex}
+.ansbox{background:linear-gradient(180deg,#f3f8f4,#eef7f2);border:1px solid #cfe9dc;border-radius:11px;padding:11px 13px}
+.ansbox .k{font-size:11px;color:#0b7a55;font-weight:800;letter-spacing:.5px}
+.ansbox .v{font-size:14.5px;font-weight:800;margin-top:3px;line-height:1.6;color:#0a5f43}
+.sec h4{font-size:12px;margin:0 0 6px;color:var(--ink2);letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.sec h4:before{content:"";width:3px;height:12px;border-radius:2px;background:var(--brand);display:inline-block}
+.sec ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.sec li{font-size:13.2px;line-height:1.8;color:var(--ink);padding-left:14px;position:relative}
+.sec li:before{content:"";position:absolute;left:2px;top:9px;width:4px;height:4px;border-radius:50%;background:#b9c6da}
+.sec.formula li{color:#33425c;background:#f7f9fc;border-radius:8px;padding:6px 10px 6px 22px}
+.sec.formula li:before{background:var(--violet);left:9px}
+.trap{background:#fffaf0;border:1px solid #f3e3c3;border-radius:11px;padding:11px 13px;font-size:13.2px;line-height:1.85;color:#7a5312}
+.trap b{color:#a7651b}
+.var{font-size:12.8px;color:var(--ink2);line-height:1.8;background:#f7f9fc;border-radius:10px;padding:9px 11px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:10.8px;color:var(--ink3);background:#f2f5fa;border-radius:5px;padding:2px 6px}
+
+/* ---------- 易错点清单 ---------- */
+.trap-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:900px){.trap-grid{grid-template-columns:1fr}}
+.trapcard{padding:18px;display:flex;gap:14px;align-items:flex-start}
+.trapcard .no{width:34px;height:34px;flex:0 0 34px;border-radius:10px;display:grid;place-items:center;font-weight:800;
+  background:var(--red-soft);color:var(--red);font-size:13px}
+.trapcard h3{font-size:14.5px;margin:0 0 5px}
+.trapcard p{margin:0;font-size:12.6px;line-height:1.8;color:var(--ink2)}
+.trapcard .links{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+.linkq{font-size:11px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 9px;cursor:pointer;color:var(--brand)}
+.linkq:hover{background:var(--brand-soft)}
+
+/* ---------- 错题本 / 统计 ---------- */
+.empty{padding:46px 20px;text-align:center;color:var(--ink3);font-size:13px;line-height:2}
+.empty svg{opacity:.5;margin-bottom:8px}
+.wrong-list{display:flex;flex-direction:column;gap:10px}
+.wrong-item{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;box-shadow:var(--shadow);flex-wrap:wrap}
+.wrong-item .t{flex:1;min-width:220px;font-size:13px;line-height:1.7}
+.wrong-item .mine{font-size:11.5px;color:var(--red);background:var(--red-soft);border-radius:6px;padding:2px 7px}
+.wrong-item .right{font-size:11.5px;color:var(--green);background:var(--green-soft);border-radius:6px;padding:2px 7px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.stats-grid{grid-template-columns:1fr}}
+.statcard{padding:18px}
+.statcard h3{font-size:14px;margin:0 0 14px}
+.bar-row{display:grid;grid-template-columns:118px 1fr 46px;align-items:center;gap:10px;margin-bottom:10px;font-size:12.5px}
+.bar{height:9px;border-radius:5px;background:var(--line2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#6d9bff,#1e5eff)}
+.bar i.g{background:linear-gradient(90deg,#5fd3a8,#0f9f6e)}
+.bar-row .num{text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.donut{--p:0;width:132px;height:132px;border-radius:50%;flex:0 0 132px;display:grid;place-items:center;
+  background:conic-gradient(var(--green) calc(var(--ok)*1%),var(--red) 0 calc((var(--ok) + var(--bad))*1%),var(--line2) 0)}
+.donut i{width:100px;height:100px;background:var(--card);border-radius:50%;display:grid;place-items:center;font-style:normal;
+  font-size:20px;font-weight:800;flex-direction:column}
+.donut small{font-size:10.5px;color:var(--ink3);font-weight:400;margin-top:2px}
+.legend{font-size:12.5px;color:var(--ink2);line-height:2}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+
+/* ---------- 考试模式 ---------- */
+.modal{position:fixed;inset:0;background:rgba(15,27,45,.45);backdrop-filter:blur(3px);z-index:60;display:none;
+  align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.dialog{background:var(--card);border-radius:20px;max-width:560px;width:100%;padding:26px;box-shadow:0 30px 80px rgba(9,20,40,.35)}
+.dialog h3{margin:0 0 8px;font-size:19px}
+.dialog p{margin:0 0 18px;color:var(--ink2);font-size:13px;line-height:1.8}
+.dialog .row{display:flex;gap:10px;justify-content:flex-end}
+.exam-bar{position:sticky;top:0;z-index:30;background:rgba(244,246,250,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:16px;display:none}
+.exam-bar.on{display:block}
+.exam-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.timer{font-variant-numeric:tabular-nums;font-size:20px;font-weight:800;letter-spacing:.5px}
+.timer.warn{color:var(--red)}
+.progress{flex:1;min-width:140px;height:8px;background:var(--line2);border-radius:5px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#1e5eff,#6d48e5);width:0;min-width:2px;transition:.3s}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:#fff;
+  padding:10px 18px;border-radius:11px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:90}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.daily-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.daily-left{display:flex;align-items:center;gap:10px;font-size:13px;flex-wrap:wrap}
+.daily-left b{font-size:14px}
+.daily-right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.src{font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:700}
+.src.offline{background:var(--amber-soft);color:var(--amber)}
+.daily-foot{margin-top:20px;text-align:center}
+.muted{color:var(--ink3);font-size:12px}
+.footer{margin-top:40px;text-align:center;font-size:11.5px;color:var(--ink3);line-height:2}
+kbd{background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px;font-size:11px}
+@media(max-width:640px){
+  .wrap{padding:16px 14px 60px}
+  .hero-main{padding:20px 18px}
+  .hero-main h2{font-size:23px}
+  .hero-main p{font-size:13px}
+  .metrics{gap:18px}
+  .metric b{font-size:20px}
+  .top{gap:10px}
+  .btn{padding:8px 11px;font-size:12.5px}
+  .tabs{margin:16px -14px 12px;padding:0 8px}
+  .grid{grid-template-columns:1fr!important;grid-auto-rows:auto!important}
+  .card{grid-row-end:auto!important}
+  .frow{row-gap:7px}
+  .flabel{width:100%;flex-basis:100%}
+  .daily-right{margin-left:0}
+  .daily-bar{padding:12px 14px}
+}
+@media print{.top,.hero,.tabs,.filters,.exam-bar,.ops,.ansrow,.footer{display:none!important}
+  .card,.panel{box-shadow:none;break-inside:avoid} .detail{display:flex!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="mark">管工</div>
+    <div class="brand">
+      <h1>管工计算题库</h1>
+      <p>A 识图换算 · B 下料展开 · C 安装受力 · D 系统参数 · E 综合算量</p>
+    </div>
+    <div class="grow"></div>
+    <button class="btn" id="btnRandom">随机来一题</button>
+    <button class="btn" id="btnExam">模拟小测 · 15 题</button>
+    <button class="btn primary" id="btnPrint">打印题册</button>
+  </div>
+
+  <section class="hero">
+    <div class="panel hero-main">
+      <span class="kicker">48 题 + 每日卷 · 5 板块 · 3 难度 · 7 个必踩坑</span>
+      <h2>把「管道计算长度」这道<em>硬坎</em>，48 步打底、每天再加 15 题</h2>
+      <p>题库 48 题（含化工/食品/制药车间场景），今日卷每天 0 点按日期自动生成 15 道新题；先用你的算法填答案，再展开核对。中级以上题全部埋了干扰条件——先判断，再动笔。</p>
+      <div class="metrics">
+        <div class="metric"><b id="mTotal">48</b><span>题库总数</span></div>
+        <div class="metric"><b id="mDone">0</b><span>已做</span></div>
+        <div class="metric"><b id="mAcc">—</b><span>正确率</span></div>
+        <div class="metric"><b id="mStar">0</b><span>重点标记</span></div>
+      </div>
+    </div>
+    <div class="panel hero-side">
+      <div class="today"><span>今日进度</span><span id="todayCnt">0 / 48</span></div>
+      <div class="ring-wrap">
+        <div class="ring" id="ring">
+          <svg viewBox="0 0 104 104" width="104" height="104" aria-hidden="true">
+            <circle cx="52" cy="52" r="45" fill="none" stroke="var(--line2)" stroke-width="9"/>
+            <circle id="ringArc" cx="52" cy="52" r="45" fill="none" stroke="url(#ringGrad)" stroke-width="9"
+              stroke-linecap="round" stroke-dasharray="282.7" stroke-dashoffset="282.7"
+              transform="rotate(-90 52 52)" style="transition:stroke-dashoffset .5s ease"/>
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1e5eff"/><stop offset="1" stop-color="#6d48e5"/>
+            </linearGradient></defs>
+          </svg>
+          <i><b id="ringPct">0%</b><small>完成度</small></i></div>
+        <div class="ring-stats">
+          已答对 <b id="rsOk">0</b> 题 · 答错 <b id="rsBad">0</b> 题<br>
+          做题记录自动保存在本机浏览器
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+      <button class="btn ghost sm" id="btnReset" style="align-self:flex-start;color:var(--ink3)">清空记录</button>
+    </div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab on" data-view="daily">今日卷 <span class="n" id="tabDailyN">15</span></button>
+    <button class="tab" data-view="bank">题库 <span class="n" id="tabBankN">48</span></button>
+    <button class="tab" data-view="traps">易错点 <span class="n">7</span></button>
+    <button class="tab" data-view="wrong">错题本 <span class="n" id="tabWrongN">0</span></button>
+    <button class="tab" data-view="stats">统计</button>
+  </nav>
+
+  <div class="exam-bar" id="examBar">
+    <div class="exam-inner">
+      <span class="kicker" style="background:var(--red-soft);color:var(--red)">模拟小测</span>
+      <span class="timer" id="timer">30:00</span>
+      <div class="progress"><i id="examProg"></i></div>
+      <span style="font-size:12.5px;color:var(--ink2)" id="examCount">0 / 15</span>
+      <button class="btn sm" id="btnSubmitExam">交卷</button>
+      <button class="btn sm ghost" id="btnQuitExam">退出</button>
+    </div>
+  </div>
+
+  <section class="view on" id="view-daily">
+    <div class="daily-bar">
+      <div class="daily-left">
+        <span class="kicker" id="dailyKicker">今日卷</span>
+        <b id="dailyDate">—</b>
+        <span class="src" id="dailySrc">内置生成</span>
+      </div>
+      <div class="daily-right">
+        <span class="muted" id="dailyHint">每天 0 点自动换一套 · 5 板块 × 3 难度 · 已答 <b id="dailyDone">0</b>/<b id="dailyTotal">15</b></span>
+        <button class="btn sm ghost" id="btnDailyRefresh">换一批（今日内）</button>
+      </div>
+    </div>
+    <div class="grid" id="dailyGrid"></div>
+    <div class="daily-foot">
+      <button class="btn sm" data-goto-view="bank">去题库看全部 48 题 →</button>
+    </div>
+  </section>
+
+  <section class="view" id="view-bank">
+    <div class="filters">
+      <div class="frow" id="boardFilter">
+        <span class="flabel">板块</span>
+        <button class="chip on" data-board="all">全部 <span class="c">30</span></button>
+        <button class="chip" data-board="A">A 识图换算 <span class="c">6</span></button>
+        <button class="chip" data-board="B">B 下料展开 <span class="c">6</span></button>
+        <button class="chip" data-board="C">C 安装受力 <span class="c">6</span></button>
+        <button class="chip" data-board="D">D 系统参数 <span class="c">6</span></button>
+        <button class="chip" data-board="E">E 综合算量 <span class="c">6</span></button>
+      </div>
+      <div class="frow" id="industryFilter">
+        <span class="flabel">行业</span>
+        <button class="chip on" data-industry="all">全部 <span class="c">48</span></button>
+        <button class="chip" data-industry="通用">通用 <span class="c">30</span></button>
+        <button class="chip" data-industry="化工">化工 <span class="c">6</span></button>
+        <button class="chip" data-industry="食品">食品 <span class="c">6</span></button>
+        <button class="chip" data-industry="制药">制药 <span class="c">6</span></button>
+      </div>
+      <div class="frow" id="levelFilter">
+        <span class="flabel">难度</span>
+        <button class="chip d0" data-level="初级">初级 <span class="c">10</span></button>
+        <button class="chip d1" data-level="中级">中级 <span class="c">10</span></button>
+        <button class="chip d2" data-level="高级">高级 <span class="c">10</span></button>
+        <button class="chip" data-level="all">全部</button>
+        <span class="fmeta" id="resultMeta"></span>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="view" id="view-traps">
+    <div class="trap-grid" id="traps"></div>
+  </section>
+
+  <section class="view" id="view-wrong">
+    <div id="wrongBox"></div>
+  </section>
+
+  <section class="view" id="view-stats">
+    <div class="stats-grid">
+      <div class="panel statcard">
+        <h3>按板块正确率</h3>
+        <div id="boardStats"></div>
+      </div>
+      <div class="panel statcard">
+        <h3>按难度正确率</h3>
+        <div id="levelStats"></div>
+      </div>
+      <div class="panel statcard">
+        <h3>作答总览</h3>
+        <div class="donut-wrap">
+          <div class="donut" id="donut" style="--ok:0;--bad:0"><i><span id="donutPct">0%</span><small>正确率</small></i></div>
+          <div class="legend" id="legend"></div>
+        </div>
+      </div>
+      <div class="panel statcard">
+        <h3>下一步建议</h3>
+        <div id="advice" style="font-size:13px;line-height:2;color:var(--ink2)"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    数据自洽校验：48 道题库 + 每日生成卷均由独立脚本复算 · 坡度/试压/支架依据 GB 50015、GB 50242、GB 50235/50316 及 GMP 常用规定<br>
+    快捷键：<kbd>?</kbd> 随机一题 · 作答后按 <kbd>Enter</kbd> 核对
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="dialog">
+    <h3 id="dlgTitle">模拟小测</h3>
+    <p id="dlgText">从 5 个板块的初/中/高各抽 1 题，共 15 题，限时 30 分钟。作答即时判分，交卷后给出板块与难度诊断。</p>
+    <div class="row">
+      <button class="btn ghost" id="dlgCancel">取消</button>
+      <button class="btn primary" id="dlgOk">开始</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let BANKS = [{"行业":"通用","id":"A1","板块":"A-识图与尺寸换算","难度":"初级","题型":"换算","场景":"住宅卫生间排水横支管标注 φ50，设计说明：排水铸铁管，De50×3.5，连接 1 个坐便器（排水当量 4）与 1 个地漏（当量 1）。","题干":"该管段公称直径是多少？内径是多少？内径对应的过水断面面积是多少 cm²？","公式依据":["公称直径 DN 取标注值 50，单位 mm","内径 D内 = De − 2δ（De 为外径，δ 为壁厚）","过水断面 A = πD内²/4"],"分步计算":["步骤1：公称直径 DN50，对应管系列外径 De = 50 mm。","步骤2：内径 D内 = 50 − 2×3.5 = 43 mm。","步骤3：A = π×43²/4 = π×462.25 = 1 452.2 mm²。","步骤4：换算为 cm²：1 452.2 ÷ 100 = 14.52 cm²。"],"答案":"DN50；内径 43 mm；过水断面 14.52 cm²","易错点":"① 把 DN 当内径或外径直接平方，忽略 3.5 mm 壁厚（内径 43 mm，面积差约 16%）；② 面积换算把 mm² 当 cm²（1 cm² = 100 mm²）；③ 被两个排水当量干扰，误去查流量表。","变式建议":"改为 DN100 无缝钢管 De108×4，求内径与过水断面；或给出排水当量，问横支管管径是否满足不小于 50 mm 的构造要求。"},{"行业":"通用","id":"A2","板块":"A-识图与尺寸换算","难度":"初级","题型":"换算","场景":"水平干管标高 −0.900，分支处 45° 下翻，两管中心水平偏距 600 mm；45° 管段水平投影长 600 mm，下翻前水平干管已画 4 000 mm。","题干":"① 45° 斜管的实际长度是多少 mm？② 该段管道的水平总投影长度是多少 mm？","公式依据":["45° 等腰直角关系：斜边 = 水平投影 × 1.414（或 ×√2）","水平总投影 = 直线段 + 斜管水平投影"],"分步计算":["步骤1：斜管长度 = 600 × 1.414 = 848.4 mm。","步骤2：斜管水平投影 = 600 mm（与偏距相等）。","步骤3：水平总投影 = 4 000 + 600 = 4 600 mm。","步骤4：斜管实际长度 848.4 mm 只用于算料，不能计入水平投影。"],"答案":"45° 斜管 848.4 mm；水平总投影 4 600 mm","易错点":"① 把 1.414 同时用在水平投影上，得到 4 600×1.414 = 6 504 mm 的错误总长（易错点 2）；② 忘记斜管本身的水平投影 600 mm，只算 4 000 mm；③ 把斜长 848.4 当水平投影。","变式建议":"偏距改为 300 mm、水平干管 12 000 mm；或改成 30°/60° 斜管，给出 sin/cos 值求斜长与投影。"},{"行业":"通用","id":"A3","板块":"A-识图与尺寸换算","难度":"中级","题型":"判断题","场景":"单线图中一段 DN100 钢管，中心线尺寸标注 9.000 m，两端各接 1 个 90° 弯头；弯头中心弯曲半径 R = 1.5D，管外径 D = 114 mm。班组长让新工人按 9.000 m 直接下料。","题干":"① 按图直接下 9.000 m 是否正确？② 扣除两个弯头占用后，该段净下料长度是多少米？","公式依据":["单线图标注为管件中心距，不是净料长度（易错点 7）","90° 弯头单端占用长度 = 中心弯曲半径 R（切点至中心交点）","净下料 = 中心距 − Σ管件占用长度"],"分步计算":["步骤1：R = 1.5D = 1.5×114 = 171 mm。","步骤2：单个 90° 弯头占用 171 mm，两个共 2×171 = 342 mm = 0.342 m。","步骤3：净下料长度 = 9.000 − 0.342 = 8.658 m。","步骤4：判定：直接下 9.000 m 会多出 342 mm，安装时顶死或被迫二次切割，两端坡口位置错位。"],"答案":"不正确；净下料长度 8.658 m","易错点":"① 把单线图中心距当净料长度直接下料（最容易犯、最难返工，易错点 7）；② 只扣一端弯头；③ 用 DN100 而不是外径 114 去算 R。","变式建议":"改为 DN150（De159）两端 90°、R = 2D，中心距 12.500 m；或一端 90° 一端 45°，问净料长度。"},{"行业":"通用","id":"A4","板块":"A-识图与尺寸换算","难度":"中级","题型":"计算","场景":"DN150 排水铸铁管（De159）穿 240 mm 厚砖墙，两侧各留 30 mm 装饰面层；套管采用焊接钢管，管外壁与套管内壁四周间隙 6 mm；设计要求套管每侧出墙面 50 mm。","题干":"① 套管最小内径取多少？② 套管长度取多少？③ 墙厚 240 mm 在本题中起什么作用？","公式依据":["套管内径 ≥ 管道外径 + 2×间隙","套管长度 = 墙厚 + 两侧装饰层 + 两侧出墙长度"],"分步计算":["步骤1：套管内径 ≥ 159 + 2×6 = 171 mm，实取 φ180 套管（内径约 171～177）。","步骤2：装饰层两侧各 30 mm，合计 60 mm。","步骤3：套管内穿越结构总厚 = 240 + 60 = 300 mm。","步骤4：套管长度 = 300 + 2×50 = 400 mm。","步骤5：墙厚 240 mm 只用于确定穿越厚度，与管径、间隙无关，属干扰条件。"],"答案":"套管内径 ≥ 171 mm（实取 φ180）；套管长度 400 mm；墙厚仅用于定穿越厚度","易错点":"① 套管长度只按墙厚 240 mm 下料，安装后两侧露不出、无法封堵；② 套管内径按 DN150 取 150 mm，比管外径 159 还小，根本穿不进去；③ 拿墙厚去算间隙或管径。","变式建议":"墙厚 370 mm、装饰层 40 mm、出墙 60 mm；或改为穿楼板套管，问高出地面 50 mm 时的总长度。"},{"行业":"通用","id":"A5","板块":"A-识图与尺寸换算","难度":"高级","题型":"计算判断","场景":"管井立管单线图：1 层立管中心距 5 800、2 层 6 000、3 层 6 000，楼板厚 120 mm，立管穿楼板处每层设 1 个 90° 弯让位（R = 1.5D，管外径 114 mm）。施工员按“层高相加”下料，即 5 800 + 6 000 + 6 000 = 17 800 mm。另有说法认为楼板厚 120 mm 也应逐层计入。","题干":"① 立管中心距总长是多少？② 3 个弯头共占用多少长度？③ 净下料长度是多少？④ 判定施工员的 17 800 mm 是否正确，楼板厚是否要逐层加？","公式依据":["立管中心距按层高标注累加，楼板厚已含在层高内（易错点 7）","90° 弯头单端占用 = R = 1.5×外径","净下料 = 中心距总长 − Σ弯头占用"],"分步计算":["步骤1：中心距总长 = 5 800 + 6 000 + 6 000 = 17 800 mm。","步骤2：R = 1.5×114 = 171 mm，单个弯头占用 2×171 = 342 mm，3 个共 1 026 mm。","步骤3：净下料 = 17 800 − 1 026 = 16 774 mm = 16.774 m。","步骤4：判定：直接下 17 800 mm 错误，多 1 026 mm；楼板厚 120 mm 已包含在层高标注中，逐层再加属重复计量 360 mm。"],"答案":"中心距 17 800 mm；弯头占用 1 026 mm；净下料 16.774 m；施工员算法错误，楼板厚不重复计","易错点":"① 按层高直接下料，不扣 3 个弯头占用（多 1 m 以上，立管顶到楼板）；② 把楼板厚 120 mm 逐层再加，重复计量 360 mm；③ 3 个弯头只扣 1 个。","变式建议":"改为 4 层、每层 2 个弯头；或管径改 DN150 使 R 变化后重算。"},{"行业":"通用","id":"A6","板块":"A-识图与尺寸换算","难度":"高级","题型":"计算判断","场景":"DN100 给水横管（De108×4）遇 600×600 混凝土柱：管道先向东 3 200，转 45° 斜向东北 1 500（斜段实长），再转 45° 回正东 2 800。两处 45° 弯头均为 R = 1.5D 成品弯头。施工员说“斜段是实长，不用扣弯头”。","题干":"① 中心线总长是多少？② 两个 45° 弯头共占用多少？③ 净下料长度是多少？④ 判定“斜段不用扣弯头”是否成立；⑤ 若误按 90° 弯扣 2R，会多扣多少料？","公式依据":["中心线总长 = 各段中心距之和（斜段已给实长）","45° 弯头单端占用 = R·tan22.5° = 0.414R","净下料 = 中心距 − Σ管件占用（每弯两端计）","两 45° 弯组成 90° 转向时总占用 = 4×0.414R，而非 2×2R"],"分步计算":["步骤1：中心线总长 = 3 200 + 1 500 + 2 800 = 7 500 mm。","步骤2：R = 1.5×108 = 162 mm；单个 45° 弯两端占用 2×0.414×162 = 134.1 mm；两个弯共 268.2 mm。","步骤3：净下料 = 7 500 − 268.2 = 7 231.8 mm = 7.232 m。","步骤4：判定：“斜段不用扣弯头”不成立——单线图斜段同样是中心距（易错点 7），必须扣占用（易错点 2）。","步骤5：若按 90° 弯 2×2R = 648 mm 扣，多扣 648 − 268.2 = 379.8 mm，下料短 380 mm，接口出缝隙。"],"答案":"中心线 7 500 mm；45° 弯占用 268.2 mm；净下料 7.232 m；斜段同样要扣；误按 90° 扣会多扣 379.8 mm","易错点":"① 认为“斜段是实长、不用扣弯头”；② 45° 弯套用 90° 弯的 2R；③ 把 1 500 当水平投影再乘 1.414（题给的是斜段实长）；④ 只扣单端。","变式建议":"改为两个 30° 弯绕柱（系数 0.268R）；或给出柱宽与净距反求斜段长度。"},{"行业":"通用","id":"B1","板块":"B-下料展开","难度":"初级","题型":"计算","场景":"DN100 无缝钢管（De108×4）热煨 90° 弯，弯曲半径取 1.5D，弯管机夹持需要两端各留 100 mm 直段。","题干":"① 中心弯曲半径是多少？② 按中心线计算的展开弧长是多少？③ 两端各留 100 mm 直段时，下料长度是多少？","公式依据":["D 取管外径 108 mm","中心弯曲半径 R = 1.5D","弯管展开长度 L = πRθ/180（θ 以度计）","下料长度 = 弧长 + 两端预留直段"],"分步计算":["步骤1：R = 1.5×108 = 162 mm。","步骤2：L = π×162×90/180 = π×162/2 = 254.5 mm。","步骤3：两端预留 2×100 = 200 mm。","步骤4：下料长度 = 254.5 + 200 = 454.5 mm。","步骤5：若为成品弯头，则按厂家中心距扣除，不另加直段。"],"答案":"R = 162 mm；展开弧长 254.5 mm；下料长度 454.5 mm","易错点":"① 用公称直径 100 mm 当外径算 R = 150 mm，弧长只剩 235.6 mm，短 19 mm（易错点 1）；② 下料时忘加夹持直段，弯管机夹不住料；③ 把两端直段也按弧长计算。","变式建议":"R 改为 3D，比较“弧长 − 2R”的适用条件；或改为 45° 弯、R = 2D，求展开弧长。"},{"行业":"通用","id":"B2","板块":"B-下料展开","难度":"初级","题型":"计算","场景":"DN50 焊接钢管（De57×3.5）制作 45° 弯头，弯曲半径 R = 1.5D，弯头两端切点各预留 30 mm 直段。","题干":"求该 45° 弯头的中心线展开弧长，以及计入两端预留直段后的下料长度。","公式依据":["D 取外径 57 mm","R = 1.5D","L = πR×45/180","下料长度 = 弧长 + 2×预留直段"],"分步计算":["步骤1：R = 1.5×57 = 85.5 mm。","步骤2：L = π×85.5×45/180 = 67.2 mm。","步骤3：两端预留直段 2×30 = 60 mm。","步骤4：下料长度 = 67.2 + 60 = 127.2 mm。"],"答案":"展开弧长 67.2 mm；下料长度 127.2 mm","易错点":"① 用 DN50 当外径算 R = 75 mm，弧长变成 58.9 mm，短 8 mm（易错点 1）；② 把 45° 的 1.414 系数用在弧长上；③ 忘加两端直段，弯管机夹不住料。","变式建议":"R 改为 2D、角度 60°；或给出现场只允许两端各 20 mm 直段，问最短可下料长度。"},{"行业":"通用","id":"B3","板块":"B-下料展开","难度":"中级","题型":"计算","场景":"DN80 无缝钢管（De89×4）预制件：先 45° 弯（R₁ = 2D），再 90° 弯（R₂ = 1.5D），两弯之间直段中心距 3 000 mm，两端各留 100 mm 夹持直段；加工单标注“按 D = 89 计算”，现场领料单上写的却是 DN80。","题干":"① 两个弯头的展开弧长各是多少？② 该预制件总下料长度是多少？③ 加工单按 D = 89 计算是否正确？","公式依据":["D 取外径 89 mm","L = πRθ/180","总下料 = 直段 + Σ弧长 + 两端夹持直段"],"分步计算":["步骤1：R₁ = 2×89 = 178 mm，L₁ = π×178×45/180 = 139.8 mm。","步骤2：R₂ = 1.5×89 = 133.5 mm，L₂ = π×133.5×90/180 = 209.7 mm。","步骤3：两弯之间直段 3 000 mm，两端夹持直段 2×100 = 200 mm。","步骤4：总下料 = 3 000 + 139.8 + 209.7 + 200 = 3 549.5 mm = 3.550 m。","步骤5：判定：加工单按 D = 89 正确。若误用 DN80（R₁ = 160、R₂ = 120），两段弧长合计少 30.2 mm，弯头角度偏差超 5°。"],"答案":"弧长 139.8 mm 与 209.7 mm；总下料 3 549.5 mm（3.550 m）；按 D = 89 计算正确","易错点":"① 用 DN80 代替外径 89 计算 R（弧长偏小 10%，弯头“昂头/勾头”，易错点 1）；② 两个弯头半径不同却套用同一 R；③ 下料忘加两端 100 mm 夹持直段。","变式建议":"改为 60°（R = 2D）+ 90°（R = 1.5D）；或两弯之间改 800 mm 短直段，问能否加工。"},{"行业":"通用","id":"B4","板块":"B-下料展开","难度":"中级","题型":"计算","场景":"DN125 无缝钢管（De133×4）弯管件：90° 弯 R = 3D，45° 弯 R = 1.5D，两弯之间中心距 2 500 mm；弯管机夹持各端需 120 mm 直段。图纸标注 D = 133。","题干":"① 两个弯头的展开弧长各是多少？② 两弯中心弯曲半径相差多少？③ 总下料长度是多少？","公式依据":["D 取外径 133 mm","L = πRθ/180","总下料 = 直段 + Σ弧长 + 两端夹持直段"],"分步计算":["步骤1：R₁ = 3×133 = 399 mm，L₁ = π×399×90/180 = 627.1 mm。","步骤2：R₂ = 1.5×133 = 199.5 mm，L₂ = π×199.5×45/180 = 156.7 mm。","步骤3：半径差 = 399 − 199.5 = 199.5 mm。","步骤4：总下料 = 2 500 + 627.1 + 156.7 + 2×120 = 3 523.8 mm ≈ 3.524 m。"],"答案":"弧长 627.1 mm 与 156.7 mm；半径差 199.5 mm；总下料 3 523.8 mm","易错点":"① 两个弯头都套 R = 1.5D，90° 弧长少算一半；② 用 DN125 当 D（R₁ 变 375，弧长少 38 mm）；③ 忘加两端 120 mm 夹持直段。","变式建议":"改为 60°（R = 2D）+ 90°（R = 1.5D）；或两弯之间改 800 mm 短直段，问能否加工。"},{"行业":"通用","id":"B5","板块":"B-下料展开","难度":"高级","题型":"计算判断","场景":"DN150 镀锌钢管（De159×4.5）工厂预制：中心距合计 15 200 mm，中间含 1 个 90° 弯和 1 个 45° 弯。质检按平台放样实测：90° 弯中心弧长 1 040 mm、45° 弯中心弧长 350 mm、两弯中心弯曲半径均为 1.5D。同时规定：现成管材制作时按外径加样板纸厚，板材卷制时按中心径（外径 − 壁厚）。","题干":"① 该预制件净下料长度是多少 mm？② 题中“1 040 mm、350 mm”是什么量？③ 若该件由钢板卷制，展开直径应取多少？","公式依据":["实测中心弧长即弯头占用的中心线长度","净下料 = 中心距 − Σ弯头中心弧长（实测弧长法）","板材卷制：展开直径 D中 = 外径 − 壁厚（易错点 5）","现成管材：按外径并另加样板纸厚"],"分步计算":["步骤1：Σ弯头占用 = 1 040 + 350 = 1 390 mm。","步骤2：净下料长度 = 15 200 − 1 390 = 13 810 mm。","步骤3：1 040、350 是实测中心弧长（放样弧长），不是弯曲半径；半径应为 1.5×159 = 238.5 mm。","步骤4：板材卷制展开直径 D中 = 159 − 4.5 = 154.5 mm；现成管材按外径 159 mm 加样板纸厚，两者弧长相差约 2.8%，不可混用。"],"答案":"净下料 13 810 mm；1 040/350 为实测中心弧长；板材卷制展开直径 154.5 mm","易错点":"① 把 1 040 mm 当弯曲半径再算弧长（数值放大数十倍）；② 只扣一个弯头；③ 板材卷制用外径 159 展开，弯头角度累积后“勾头”（易错点 5）。","变式建议":"改为 90°+90°+45° 三弯，给出各段弧长；或板材卷制与现成管材两种方案对比下料长度差。"},{"行业":"通用","id":"B6","板块":"B-下料展开","难度":"高级","题型":"计算判断","场景":"DN200 弯头（De219×8）设计 R = 1.5D（按中心径计）。方案 A 用 8 mm 钢板卷制，按中心径展开；方案 B 用现成 φ219×8 无缝管煨制，按外径展开。各做 1 个 90° 弯头，两端各留 60 mm 直段。","题干":"① 方案 A 的展开直径与展开弧长是多少？② 方案 B 的展开直径与弧长是多少？③ 两方案下料长度差多少？④ 判定：能否用方案 A 的下料单直接给方案 B 下料？","公式依据":["板材卷制展开直径 D中 = De − δ（易错点 5）","现成管材展开直径取 De（样板另加纸厚）","L = πR×90/180，R = 1.5×展开直径"],"分步计算":["步骤1：方案 A：D中 = 219 − 8 = 211 mm，R = 1.5×211 = 316.5 mm，L = π×316.5/2 = 497.2 mm；下料 = 497.2 + 120 = 617.2 mm。","步骤2：方案 B：展开直径 219 mm，R = 1.5×219 = 328.5 mm，L = π×328.5/2 = 516.0 mm；下料 = 516.0 + 120 = 636.0 mm。","步骤3：差 = 636.0 − 617.2 = 18.8 mm（约 3%）。","步骤4：判定：不可通用。A 的料短 18.8 mm，用于 B 会造成对口错边、弯头角度不足；反之余料过长需二次切割。"],"答案":"A：D中 211 mm、弧长 497.2 mm、下料 617.2 mm；B：219 mm、弧长 516.0 mm、下料 636.0 mm；差 18.8 mm；不可通用","易错点":"① 两种方案都用外径 219 展开（A 多料 18.8 mm，弯头“勾头”）；② 板材按外径减壁厚后半径不同步改；③ 认为两种料单可通用。","变式建议":"壁厚改 12 mm 使差值放大；或改为 45° 弯头问角度偏差。"},{"行业":"通用","id":"C1","板块":"C-安装与受力","难度":"初级","题型":"计算","场景":"室内给水系统工作压力 0.6 MPa，系统最高点与试压泵高差 12 m；按 GB 50242 做水压试验，稳压 10 min 后降至工作压力检查。","题干":"① 试验压力取多少 MPa？② 选用量程多大的压力表？③ 为什么 0.6 MPa 的表不能用于本次试压记录？","公式依据":["试验压力 = 1.5×工作压力，且不小于 0.6 MPa、不大于 1.0 MPa（GB 50242）","压力表量程宜为试验压力的 1.5～2 倍（易错点 3）","压力表精度不低于 1.6 级"],"分步计算":["步骤1：1.5×0.6 = 0.9 MPa。","步骤2：0.9 MPa 在 0.6～1.0 MPa 区间内，试验压力取 0.9 MPa。","步骤3：量程范围 = 0.9×1.5～0.9×2 = 1.35～1.8 MPa。","步骤4：标准量程序列 0～0.6、0～1.0、0～1.6、0～2.5 MPa，取 0～1.6 MPa。","步骤5：0.6 MPa 表满量程才等于工作压力，试压时指针超程无法读数，违反“量程留 1.5～2 倍裕度”。"],"答案":"试验压力 0.9 MPa；压力表 0～1.6 MPa、精度 ≥1.6 级","易错点":"① 压力表量程直接取试验压力 0.9 MPa 或工作压力 0.6 MPa（易错点 3）；② 忘乘 1.5 直接按 0.6 MPa 试压；③ 把 12 m 高差直接加到表量程上（应作最低点压力修正，不是量程）。","变式建议":"工作压力 0.8 MPa（试验压力 1.2 MPa，超 1.0 MPa 上限，按 1.0 MPa）；或系统高差 30 m，问底层试验压力修正值。"},{"行业":"通用","id":"C2","板块":"C-安装与受力","难度":"初级","题型":"计算","场景":"DN100 水平钢管全长 36 m，设计支架间距 4 m，两端各设 1 个固定支架；单个支架（含管卡、型钢）重 3.2 kg。","题干":"① 需要多少个支架？② 支架总重多少 kg？③ 若施工队按“管长×每米管重”报料，错在哪里？","公式依据":["支架个数 n = ⌈管长 ÷ 间距⌉ + 1（两端必设，向上取整，易错点 4）","支架总重 = 个数 × 单个重量","不得用“管长 × 每米管重”代替支架重量"],"分步计算":["步骤1：36 ÷ 4 = 9 跨，两端必设 ⇒ n = 9 + 1 = 10 个。","步骤2：若按“每 4 m 一个”只算 9 个，则末端悬空 4 m，不满足受力要求。","步骤3：支架总重 = 10×3.2 = 32 kg。","步骤4：判定：用管长乘每米管重算的是管道自重，不是支架重量，二者不能互相替代。"],"答案":"10 个支架；总重 32 kg","易错点":"① 只算 9 个，忘加两端固定支架（易错点 4）；② 用 36×3.2 或“管长×每米管重”代替支架数量×单重；③ 不向上取整，出现半跨支架。","变式建议":"管长 37 m、间距 4 m（n = 10+1 = 11）；或已知支架 12 个、间距 4 m 反求管长范围。"},{"行业":"通用","id":"C3","板块":"C-安装与受力","难度":"中级","题型":"计算","场景":"DN300 蒸汽管道，安装时环境温度 20 ℃，运行温度 120 ℃，管材线膨胀系数 α = 1.2×10⁻⁵ /℃；两个固定支架之间设填料式补偿器，单个允许补偿量 50 mm，安装时按计算伸长量的 50% 预拉伸。","题干":"① 该管段热伸长量是多少 mm？② 至少需要几个补偿器？③ 预拉伸量取多少 mm？","公式依据":["ΔL = α·L·ΔT，ΔT = 运行温度 − 安装温度","补偿器个数 n = ⌈ΔL ÷ 单个允许补偿量⌉","填料式补偿器预拉伸量取计算伸长量的 50%"],"分步计算":["步骤1：ΔT = 120 − 20 = 100 ℃。","步骤2：ΔL = 1.2×10⁻⁵ × 100×10³ mm × 100 = 120 mm。","步骤3：n = 120 ÷ 50 = 2.4，向上取整 ⇒ 3 个（易错点 4）。","步骤4：预拉伸量 = 0.5×120 = 60 mm（3 个均摊则每个约 20 mm）。"],"答案":"热伸长 120 mm；补偿器 3 个；预拉伸 60 mm","易错点":"① ΔT 直接用 120 ℃ 而非温差 100 ℃，伸长量放大 20%；② 2.4 个直接取 2 个，少一个补偿器导致固定支架推力过大；③ 预拉伸取 100%（应取 50%）。","变式建议":"安装温度改为 −5 ℃（ΔT = 125 ℃）；或改为方形补偿器，问臂长。"},{"行业":"通用","id":"C4","板块":"C-安装与受力","难度":"中级","题型":"综合计算","场景":"某车间水平蒸汽管 DN150（De159），全长 40 m，中间 1 个 90° 弯头（R = 1.5D）。支架间距 4 m，两端固定支架各 1 个；单个支架重 5.6 kg，管材单位重量 18.5 kg/m。","题干":"① 扣除弯头占用后管道净长是多少？② 按 4 m 间距需多少个支架？③ 支架总重和管道自重各是多少？④ 报料时能否用“管长×每米管重”代替支架重量？","公式依据":["90° 弯头单端占用 = R = 1.5×外径","净长 = 中心线总长 − Σ弯头占用（易错点 7）","支架个数 = ⌈净长 ÷ 间距⌉ + 1（易错点 4）","支架总重 = 个数 × 单重；管道自重 = 净长 × 每米重"],"分步计算":["步骤1：弯头占用 = 2×1.5×159 = 477 mm ≈ 0.48 m。","步骤2：净长 = 40 − 0.48 = 39.52 m。","步骤3：支架个数 = ⌈39.52 ÷ 4⌉ + 1 = 10 + 1 = 11 个（若直接 40÷4 = 10 个，则末端仅 3.52 m，仍应补 1 个）。","步骤4：支架总重 = 11×5.6 = 61.6 kg。","步骤5：管道自重 = 39.52×18.5 = 731.1 kg。","步骤6：判定：支架重量按“个数×单重”，管道自重按“净长×每米重”，两笔不能混算，也不能互相替代。"],"答案":"净长 39.52 m；支架 11 个；支架总重 61.6 kg；管道自重 731.1 kg","易错点":"① 忘扣弯头占用，按 40 m 算支架；② 支架数量不取整、不加两端；③ 用 39.52×18.5 当成支架重量报料（易错点 4）。","变式建议":"改为两个 90° 弯 + 一个三通；或支吊架改为“滑动支架 9 个 + 固定支架 2 个”，分别报量。"},{"行业":"通用","id":"C5","板块":"C-安装与受力","难度":"高级","题型":"计算判断","场景":"高层住宅给水系统：底层工作压力 0.8 MPa，系统最高点与最低点高差 60 m；按 GB 50242 做水压试验，试验压力不超过 1.0 MPa，稳压 10 min 后降至工作压力检查。现有 0～1.6 MPa 与 0～2.5 MPa 两块 1.6 级表，领料员说“0.8×1.5 = 1.2，表选 0～1.6 就行”。","题干":"① 按 1.5 倍计算的试验压力是多少？② 受 1.0 MPa 上限约束后实际取多少？③ 选用哪块表？④ 判定领料员的说法是否正确；⑤ 60 m 高差对最低点试压有何影响？","公式依据":["试验压力 = 1.5×工作压力，且不小于 0.6 MPa、不大于 1.0 MPa","压力表量程 = 1.5～2 倍试验压力（易错点 3）","最低点静压增加约 0.01 MPa/m"],"分步计算":["步骤1：1.5×0.8 = 1.2 MPa。","步骤2：1.2 MPa > 1.0 MPa 上限，实际试验压力取 1.0 MPa。","步骤3：量程 = 1.0×1.5～1.0×2 = 1.5～2.0 MPa，取 0～2.5 MPa 表（0～1.6 表满量程 1.6，高差修正后易超程）。","步骤4：判定：领料员两步都错——压力应被上限截到 1.0 MPa，表应按 1.0 MPa 的 1.5～2 倍选。","步骤5：60 m 高差使最低点静压增加约 0.6 MPa，最低点实际承受约 1.6 MPa，须核算最低点管道及阀件耐压。"],"答案":"计算值 1.2 MPa；实际取 1.0 MPa；选 0～2.5 MPa 表；领料员说法错误；最低点约 1.6 MPa 需核算","易错点":"① 只乘 1.5 不看 1.0 MPa 上限；② 表量程按 0.8 或 1.2 选（易错点 3）；③ 忽略 60 m 高差对最低点的附加静压。","变式建议":"工作压力改 0.6 MPa（不受上限约束）；或高差改 100 m，问最低点耐压要求。"},{"行业":"通用","id":"C6","板块":"C-安装与受力","难度":"高级","题型":"综合计算","场景":"DN150 水平热水管（De159×4.5）长 48 m，中间 2 个 90° 弯（R = 1.5D）；支架间距 4 m，两端固定支架各 1 个，单个支架重 5.6 kg，管材 18.5 kg/m。运行温度 85 ℃、安装温度 15 ℃，α = 1.2×10⁻⁵/℃。设计规定：固定支架间热伸长超过 40 mm 须设补偿器。","题干":"① 净管长是多少？② 支架多少个、总重多少？③ 热伸长多少、是否需补偿器？④ 判定“管道自重 = 支架总重”的说法是否成立。","公式依据":["净长 = 中心距 − 2×2R","支架数 = ⌈净长 ÷ 间距⌉ + 1（易错点 4）","ΔL = α·L·ΔT","支架总重 = 个数 × 单重；管道自重 = 净长 × 每米重"],"分步计算":["步骤1：R = 1.5×0.159 = 0.2385 m，2 个弯共 4 端占用 4×0.2385 = 0.954 m；净长 = 48 − 0.954 = 47.046 m。","步骤2：支架数 = ⌈47.046 ÷ 4⌉ + 1 = 12 + 1 = 13 个；总重 = 13×5.6 = 72.8 kg。","步骤3：ΔT = 85 − 15 = 70 ℃，ΔL = 1.2×10⁻⁵ × 47.046×10³ × 70 = 39.5 mm \u003c 40 mm，可不设补偿器（接近限值，宜留观察点）。","步骤4：管道自重 = 47.046×18.5 = 870.4 kg，与支架总重 72.8 kg 相差一个数量级，说法不成立。"],"答案":"净长 47.046 m；支架 13 个、总重 72.8 kg；热伸长 39.5 mm，暂不需补偿器；自重 870.4 kg ≠ 支架重","易错点":"① 热伸长用总长 48 m 或 ΔT 用 85 ℃；② 39.5 mm 与 40 mm 比大小判反；③ 支架 12 个不加两端；④ 把管道自重当支架重量报料。","变式建议":"安装温度改 5 ℃（ΔL = 45.2 mm，需设补偿器）；或管径改 DN200 重算。"},{"行业":"通用","id":"D1","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"DN100 给水钢管，De108×4，管内流速 1.2 m/s。","题干":"求该管道的体积流量 Q，分别用 m³/s 和 m³/h 表示。","公式依据":["Q = A·v（连续性方程）","A = πD内²/4，D内 = De − 2δ","1 m³/s = 3 600 m³/h"],"分步计算":["步骤1：内径 = 108 − 2×4 = 100 mm = 0.100 m。","步骤2：A = π×0.100²/4 = 7.854×10⁻³ m²。","步骤3：Q = 7.854×10⁻³ × 1.2 = 9.425×10⁻³ m³/s。","步骤4：换算 = 9.425×10⁻³ × 3 600 = 33.93 m³/h。"],"答案":"9.425×10⁻³ m³/s，即 33.93 m³/h（约 34 m³/h）","易错点":"① 用 De108 当内径（面积偏大 16%），必须减 2 倍壁厚；② 忘乘 3 600，把 m³/s 当 m³/h；③ 面积用直径而非半径。","变式建议":"流速改 0.8 m/s；或已知 Q = 25 m³/h，反求流速。"},{"行业":"通用","id":"D2","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"DN50 生活污水铸铁横支管，标准坡度 i = 0.035，管段水平长度 20 m，起点管底标高 −0.800 m；室外检查井接口允许管底最高 −1.500 m（不得高于此值）。","题干":"① 终点管底标高是多少？② 判定是否满足室外接口标高要求；③ 若改用最小坡度 0.026，结论如何？","公式依据":["高差 h = i × L","终点标高 = 起点标高 − h","排水横支管标准坡度：DN50 取 0.035（最小 0.026）"],"分步计算":["步骤1：h = 0.035×20 = 0.700 m。","步骤2：终点标高 = −0.800 − 0.700 = −1.500 m。","步骤3：−1.500 m 恰为接口允许最高值，满足（等于上限，可行但无余量）。","步骤4：改用 i = 0.026：h = 0.520 m，终点 −1.320 m，比接口最高 −1.500 m 高 0.18 m，管道会倒坡接入，不可行。"],"答案":"终点 −1.500 m；满足但无余量；改 0.026 后 −1.320 m 不满足","易错点":"① 坡度 0.035 按 3.5% 算成 3.5×20 = 70 m；② 标高加减方向错，算成 −0.800 + 0.700；③ 只算标准坡度，不校核接口标高约束。","变式建议":"起点 −1.200、允许最高 −1.600；或已知允许高差反求最大管长。"},{"行业":"通用","id":"D3","板块":"D-系统参数","难度":"中级","题型":"计算","场景":"某住宅排水立管分 5 个施工段，组织 3 个专业班组流水施工，流水步距 K = 4 d，每个班组在每个施工段的作业时间 t = 3 d，要求 10 月 20 日前完成。","题干":"① 总工期是多少天？② 9 月 28 日开工，能否在 10 月 20 日前完成？③ 这里的“流水步距”指什么？","公式依据":["等节奏流水：T = (n−1)K + m·t（n 为施工段数，m 为班组数）","流水步距 K = 相邻两个专业班组先后进入同一施工段的时间间隔"],"分步计算":["步骤1：T = (5−1)×4 + 3×3 = 16 + 9 = 25 d。","步骤2：9 月 28 日开工，25 d 后为 10 月 22 日（9 月 3 d + 10 月 22 d），超过 10 月 20 日 2 d，不能完成。","步骤3：流水步距 K 是“相邻班组进入同一施工段的时间间隔”，与单段作业时间 t 不是同一概念，不能混用。"],"答案":"总工期 25 d；不能按期完成（晚 2 d）","易错点":"① 把 K 与 t 混用；② 用 n×K + m×t 忘记减 1；③ 只算最后班组时间 m·t，漏掉流水起步时间。","变式建议":"改为 4 个班组、6 个施工段、K = 3 d、t = 2 d；或要求 25 d 内完成，问需要几个班组。"},{"行业":"通用","id":"D4","板块":"D-系统参数","难度":"中级","题型":"计算","场景":"某工程管道安装材料计划：钢管净用量 45.0 m，管件净用量 20 个，支架型钢净用量 18 kg；钢管损耗率 4%，管件损耗率 3%，支架型钢损耗率 5%。","题干":"分别计算钢管、管件、支架型钢的材料消耗量。","公式依据":["材料消耗量 = 净用量 ×（1 + 损耗率）（易错点 6）","损耗量 = 净用量 × 损耗率"],"分步计算":["步骤1：钢管 = 45.0×1.04 = 46.8 m。","步骤2：管件 = 20×1.03 = 20.6 个，按 21 个采购（个数向上取整）。","步骤3：支架型钢 = 18×1.05 = 18.9 kg。","步骤4：合计损耗量 = 1.8 m 管 + 0.6 个管件 + 0.9 kg 型钢，损耗不能按同一个率一刀切。"],"答案":"钢管 46.8 m；管件 21 个（计算值 20.6）；支架型钢 18.9 kg","易错点":"① 只报净用量 45 m，下料不够再补料（易错点 6）；② 管件算成 20.6 个直接写小数，采购无法执行；③ 三类材料套用同一损耗率。","变式建议":"损耗率改为管材 3%、管件 5%；或已知消耗量和损耗率反求净用量。"},{"行业":"通用","id":"D5","板块":"D-系统参数","难度":"高级","题型":"计算判断","场景":"DN50 生活污水横管，起点管底标高 −0.800 m，室外检查井接口管底标高 −2.250 m，管段水平长度 30 m。规范规定 DN50 排水横管标准坡度 0.035、最小坡度 0.026；接口标高允许范围 ±0.020 m。","题干":"① 若采用标准坡度 0.035，末端标高是多少？② 判定是否落在接口允许范围内；③ 若采用最小坡度 0.026，结论如何？④ 最终应选哪种坡度、如何处理？","公式依据":["h = i·L","接口标高允许范围 −2.270～−2.230 m","排水横管坡度不得小于最小坡度，且应优先采用标准坡度"],"分步计算":["步骤1：i = 0.035 时 h = 0.035×30 = 1.050 m，末端 = −0.800 − 1.050 = −1.850 m。","步骤2：−1.850 m 比接口 −2.250 m 高 0.400 m，超出 ±0.020 m 允许范围，接不上。","步骤3：i = 0.026 时 h = 0.780 m，末端 = −1.580 m，更高，同样接不上。","步骤4：判定：两种坡度都无法直连，必须加设跌水井（跌水约 0.40 m）或加大管径、改线。","步骤5：坡度取 0.035（标准坡度），跌水井解决高差；不得为凑标高改用小于 0.026 的坡度（违反强条）。"],"答案":"末端 −1.850 m；不满足；0.026 时 −1.580 m 也不满足；应取 0.035 并设跌水井","易错点":"① 为“凑”接口标高擅自采用小于 0.026 的坡度（违反强条）；② 忽略接口允许范围 ±0.020 m，认为 0.4 m 差可“斜着接”；③ 只算一种坡度就下结论。","变式建议":"高差改为 1.02 m（恰在范围内）；或允许设跌水井，问跌水高度。"},{"行业":"通用","id":"D6","板块":"D-系统参数","难度":"高级","题型":"计算判断","场景":"同一排水立管工程：5 个施工段、流水步距 4 d、单段作业 3 d。项目要求 10 月 20 日前完成，9 月 28 日才能开工（可用工期 23 d）。现有 2 个班组可调，另 3 个班组正在其他楼栋收尾，若调入需增加赶工费。","题干":"① 用 2 个班组能否在 23 d 内完成？② 用 3 个班组呢？③ 从工期与成本角度应如何决策？④ 若必须用 3 个班组，最短需要多少天？","公式依据":["T = (n−1)K + m·t","T 随班组数 m 线性增加，随施工段数 n 线性增加"],"分步计算":["步骤1：m = 2 时 T = (5−1)×4 + 2×3 = 22 d \u003c 23 d，可完成，留 1 d 余量。","步骤2：m = 3 时 T = 16 + 9 = 25 d > 23 d，反而超期。","步骤3：班组多并不必然缩短工期——本工程受流水步距控制，增加班组只增加最后一段的作业时间，不缩短步距。","步骤4：决策：用 2 个班组即可，不必调入第 3 个班组。"],"答案":"2 个班组 22 d，可行；3 个班组 25 d，超期；应采用 2 个班组","易错点":"① 认为“人越多越快”，忽略流水步距与施工段的制约；② 把 22 d 与 23 d 的余量算错；③ 只算 m·t 漏掉 16 d 的流水起步时间。","变式建议":"施工段改为 6 个、K 改为 3 d，分别算 2/3 班组的工期；或问最少几个班组可在 20 d 内完成。"},{"行业":"通用","id":"E1","板块":"E-综合识图算量","难度":"初级","题型":"综合计算","场景":"单线图：DN100 钢管（De108×4）自 A 点向东 2 000，转 90° 向南 1 500 至 B 点；90° 弯头 1 个（R = 1.5D），支架间距 3 m。","题干":"依次计算：① 管道总中心线长度；② 弯头占用长度；③ 净下料长度；④ 支架数量。","公式依据":["总长 = 各段中心距之和（易错点 7）","90° 弯头占用 = 2R = 3D","净下料 = 总长 − 弯头占用","支架数 = ⌈总长 ÷ 间距⌉ + 1"],"分步计算":["步骤1：总长 = 2.000 + 1.500 = 3.500 m。","步骤2：R = 1.5×0.108 = 0.162 m，弯头占用 = 2×0.162 = 0.324 m。","步骤3：净下料 = 3.500 − 0.324 = 3.176 m。","步骤4：支架数 = ⌈3.500 ÷ 3⌉ + 1 = 2 + 1 = 3 个（跨数向上取整后加两端；直接把 1.167 当个数则错）。"],"答案":"总长 3.500 m；弯头占用 0.324 m；净下料 3.176 m；支架 3 个","易错点":"① 净下料忘扣弯头占用（易错点 7）；② 支架按 3.5÷3 ≈ 1.17 取 1 个，忘向上取整和两端（易错点 4）；③ 弯头占用按 DN100 算成 0.30 m 而非 0.324 m。","变式建议":"改为东西 2 500、南北 1 800、两个 90°；或间距改 2.5 m 重算支架。"},{"行业":"通用","id":"E2","板块":"E-综合识图算量","难度":"初级","题型":"综合计算","场景":"单线图：DN50 焊接钢管（De57×3.5）自 A 点向东 1 800，转 90° 向南 1 200，末端接水龙头；90° 弯头 1 个（R = 1.5D），支架间距 2 m，单个支架重 1.2 kg。","题干":"依次计算：① 总中心线长度；② 弯头占用长度；③ 净下料长度；④ 支架数量与支架总重。","公式依据":["总长 = 各段中心距之和","90° 弯头占用 = 2R = 3D","净下料 = 总长 − 弯头占用","支架数 = ⌈总长 ÷ 间距⌉ + 1","支架总重 = 个数 × 单重（易错点 4）"],"分步计算":["步骤1：总长 = 1.800 + 1.200 = 3.000 m。","步骤2：R = 1.5×0.057 = 0.0855 m，弯头占用 = 2×0.0855 = 0.171 m。","步骤3：净下料 = 3.000 − 0.171 = 2.829 m。","步骤4：支架数 = ⌈3.000 ÷ 2⌉ + 1 = 2 + 1 = 3 个。","步骤5：支架总重 = 3×1.2 = 3.6 kg。"],"答案":"总长 3.000 m；弯头占用 0.171 m；净下料 2.829 m；支架 3 个、总重 3.6 kg","易错点":"① 净下料忘扣弯头占用（易错点 7）；② 支架按 3÷2 = 1.5 取 1 个（应向上取整）；③ 用“管长×每米管重”代替支架个数×单重（易错点 4）。","变式建议":"改为东西 2 400、南北 1 600、两个 90°；或间距改 1.5 m 重算支架。"},{"行业":"通用","id":"E3","板块":"E-综合识图算量","难度":"中级","题型":"综合计算","场景":"单线图描述：DN100 钢管（De108×4）自 A 点向东 6 000，转 90° 向南 4 000，再转 45° 斜向下 3 000（斜段实长，水平偏距 2 121、垂直降 2 121），末端接立管向上 3 900 至 B 点。管件：90° 弯头 2 个、45° 弯头 1 个，均为 R = 1.5D 成品弯头；支架间距 4.5 m（水平管与立管分别计）。","题干":"依次计算：① 各管段实长与总中心线长度；② 弯头数量；③ 扣除管件占用后的净下料长度；④ 支架数量。","公式依据":["45° 斜段实长 = 题给斜边，不得再乘 1.414（易错点 2）","弯头单端占用 = R = 1.5×外径","净下料 = 中心线总长 − Σ弯头占用（90° 扣 2R，45° 扣 2R·tan22.5° = 0.828R）","支架数 = ⌈水平段 ÷ 间距⌉ + ⌈立管 ÷ 间距⌉"],"分步计算":["步骤1：分段实长：东 6.000 m、南 4.000 m、斜段 3.000 m、立管 3.900 m；斜段若再乘 1.414 得 4.242 m，属重复换算。","步骤2：总中心线长度 = 6.000 + 4.000 + 3.000 + 3.900 = 16.900 m。","步骤3：弯头：2 个 90° + 1 个 45°，共 3 个。","步骤4：R = 1.5×108 = 162 mm；90° 弯两个共 2×0.324 = 0.648 m；45° 弯两端共 2×0.828×0.162 = 0.268 m。","步骤5：净下料 = 16.900 − 0.648 − 0.268 = 15.984 m。","步骤6：支架：水平段 6+4+3 = 13.000 m，⌈13.000/4.5⌉ = 3 个；立管 3.900 m，⌈3.900/4.5⌉ = 1 个；合计 4 个（固定支架另计）。"],"答案":"总中心线 16.900 m；弯头 3 个（90°×2、45°×1）；净下料 15.984 m；支架 4 个","易错点":"① 把 45° 斜段 3.000 m 再乘 1.414（斜边已给出，重复换算成 4.242 m，易错点 2）；② 每个 90° 只扣一个 R；③ 支架按总长 16.9 m 一次除，漏掉立管；④ 忘扣 45° 弯头占用。","变式建议":"改为两个 45° 组成 90° 转向、加 1 个三通；或管径改 DN150 使 R 变化后重算。"},{"行业":"通用","id":"E4","板块":"E-综合识图算量","难度":"中级","题型":"综合计算","场景":"DN200 管道（De219×6）支架采用 T 型管托：底板 250×250×12、立板 250×200×10（Q235 钢板），焊缝与防腐另计。管道全长 36 m，支架间距 3 m；钢板采购损耗率 3%，钢材密度 7 850 kg/m³。","题干":"① 单个管托两块钢板的面积和重量各是多少？② 需要多少个管托？③ 管托钢板净面积、净重量各是多少？④ 计入 3% 损耗后应采购多少 m² 钢板？","公式依据":["V = 长×宽×厚；m = V×ρ","管托数 = ⌈管长 ÷ 间距⌉ + 1","总净用量 = 单个用量 × 个数","采购量 = 净用量 ×（1 + 损耗率）（易错点 6）"],"分步计算":["步骤1：底板 V = 0.25×0.25×0.012 = 7.5×10⁻⁴ m³，m = 7.5×10⁻⁴×7 850 = 5.89 kg；面积 0.0625 m²。","步骤2：立板 V = 0.25×0.20×0.010 = 5.0×10⁻⁴ m³，m = 5.0×10⁻⁴×7 850 = 3.93 kg；面积 0.05 m²。","步骤3：单件合计面积 0.1125 m²、重量 9.82 kg。","步骤4：36 ÷ 3 = 12 跨，n = 12 + 1 = 13 个。","步骤5：净面积 = 0.1125×13 = 1.4625 m²；净重 = 9.82×13 = 127.66 kg。","步骤6：采购面积 = 1.4625×1.03 = 1.5064 m²。"],"答案":"单件 0.1125 m²/9.82 kg；13 个；净面积 1.4625 m²、净重 127.66 kg；采购 1.5064 m²","易错点":"① 只算底板漏算立板；② 用 πDL 管道表面积当钢板面积；③ 12 跨取 12 个不加末端（易错点 4）；④ 漏计 3% 损耗（易错点 6）；⑤ 体积用 cm 与 m 混算。","变式建议":"底板改 300×300×14；或支架间距 2.5 m、管长 45 m 重算；也可只问“立板减薄到 8 mm 省多少 kg”。"},{"行业":"通用","id":"E5","板块":"E-综合识图算量","难度":"高级","题型":"计算判断","场景":"DN200 管道（De219×6），中心线总长 22 000 mm，含 2 个 90° 弯（R = 1.5D）。现成无缝钢管可制作，也可由钢板卷制；现成管材按外径 219 mm 展开，板材卷制按中心径 219 − 6 = 213 mm 展开。车间主任说“两种料单可以互用，差不了几毫米”。","题干":"① 按现成管材净下料长度是多少？② 若误按板材中心径计算，结果差多少 mm？③ 判定主任“两种料单可互用”的说法是否成立；④ 取舍依据是什么？","公式依据":["90° 弯单端占用 R = 1.5×展开直径","净下料 = 中心线总长 − 4R（2 个弯 4 端）","板材卷制展开直径 = 外径 − 壁厚；现成管材取外径（易错点 5）"],"分步计算":["步骤1：现成管材 R = 1.5×219 = 328.5 mm，4 端占用 1 314 mm，净下料 22 000 − 1 314 = 20 686 mm = 20.686 m。","步骤2：误按中心径 213 mm：R = 319.5 mm，4 端占用 1 278 mm，净下料 22 000 − 1 278 = 20 722 mm。","步骤3：差值 = 20 722 − 20 686 = 36 mm（展开直径差 6 mm，经 4 端放大到 36 mm）。","步骤4：判定：不能互用。36 mm 误差分摊到 2 个弯头，每个对口错边约 9 mm，远超规范允许值。","步骤5：取舍：有现成管按外径（另加样板纸厚）；只能卷板才按中心径，两种料单必须分开标注。"],"答案":"现成管材净下料 20.686 m；误用中心径差 36 mm（偏长）；不能互用；按料源分别取外径/中心径","易错点":"① 现成管材也用中心径（看似“更准确”，实际多料 36 mm 且弯头角度偏小，易错点 5）；② 只扣一端；③ 认为 6 mm 壁厚差异可忽略——经 4 端放大后已近半个管件误差。","变式建议":"改为 DN300（De325×8）、3 个 90° 弯；或加 1 个 45° 弯比较两种方式的累计偏差。"},{"行业":"通用","id":"E6","板块":"E-综合识图算量","难度":"高级","题型":"综合计算","场景":"泵房 DN200 出口管（De219×6）：水平段 8 000，45° 斜段水平偏距 1 200（斜长 1 697），立管 4 500 至 2 层；立管上接 1 个等径三通引支管 3 000。管件：90° 弯头 2 个（R = 1.5D）、45° 弯头 1 个（R = 1.5D）、等径三通 1 个（按 1 个外径计占用）。支架间距 4.5 m。泵设计流量 25 m³/h，泵出口流速宜 1.5～2.0 m/s。","题干":"① 总中心线长度和净下料长度各是多少？② 支架多少个？③ 泵出口实际流速是多少？④ 判定流速是否合适，应如何处理？","公式依据":["45° 斜长 = 水平偏距×1.414","弯头占用：90° 单端 1.5D、45° 单端 1.5D×0.414；三通按 1 个外径","v = Q/A，A = πD内²/4，Q(m³/h) ÷ 3 600 = Q(m³/s)"],"分步计算":["步骤1：中心线总长 = 8.000 + 1.697 + 4.500 + 3.000 = 17.197 m。","步骤2：90° 弯占用 2×（2×1.5×0.219）= 1.314 m；45° 弯占用 2×（1.5×0.219×0.414）= 0.272 m；三通占用 0.219 m。","步骤3：净下料 = 17.197 − 1.314 − 0.272 − 0.219 = 15.392 m。","步骤4：支架：水平段 ⌈8.000/4.5⌉ = 2 个；斜段 1 个；立管 1 个；支管 1 个；合计 5 个。","步骤5：内径 = 219 − 2×6 = 207 mm，A = π×0.207²/4 = 0.03365 m²。","步骤6：Q = 25 ÷ 3 600 = 6.944×10⁻³ m³/s，v = Q/A = 0.206 m/s。","步骤7：判定：0.206 m/s 远低于 1.5～2.0 m/s，DN200 对 25 m³/h 明显偏大；宜缩径至 DN80（De89×4，内径 81 mm，v = 1.35 m/s）或复核泵与管路匹配。"],"答案":"中心线 17.197 m；净下料 15.392 m；支架 5 个；流速 0.206 m/s，远低于 1.5～2.0 m/s，应缩径或复核泵","易错点":"① 斜段 1 200 再乘 1.414（已给斜长 1 697，重复换算，易错点 2）；② 三通不扣占用；③ 支架按总长一次除得 4 个；④ 流速用 De219 而非内径 207；⑤ 分不清 25 m³/h 与 m³/s。","变式建议":"流量改 36 m³/h 问需选多大管径；或立管改 9 000、加 2 个三通重算支架。"},{"id":"H1","行业":"化工","板块":"C-安装与受力","难度":"初级","题型":"计算","场景":"化工厂反应釜出料管：DN50 20# 无缝钢管（De57×3.5），设计压力 1.0 MPa，介质为 0.3 MPa 蒸汽吹扫；按 GB 50235 做液压试验。","题干":"① 液压试验压力取多少 MPa？② 选用量程多大的压力表？③ 为什么不能套用建筑给水“不超过 1.0 MPa”的上限？","公式依据":["工业管道液压试验压力 = 1.5×设计压力，且不小于 0.6 MPa（GB 50235）","压力表量程 = 1.5～2 倍试验压力，精度不低于 1.6 级","建筑给水 1.0 MPa 上限出自 GB 50242，不适用于工业管道"],"分步计算":["步骤1：试验压力 = 1.5×1.0 = 1.5 MPa。","步骤2：量程范围 = 1.5×1.5～1.5×2 = 2.25～3.0 MPa。","步骤3：标准量程序列取 0～4.0 MPa（1.6 级）。","步骤4：判定：GB 50242 的 1.0 MPa 上限只约束建筑给水，工业管道按 GB 50235 取 1.5 倍，套错规范会把试验压力压到 1.0 MPa，试不住。"],"答案":"试验压力 1.5 MPa；压力表 0～4.0 MPa、1.6 级；不能套建筑给水上限","易错点":"① 把建筑给水的“1.5 倍且≤1.0 MPa”直接搬到工业管道（易错点 3 的变体）；② 表量程按 1.0 或 1.5 选；③ 忘记 0.6 MPa 下限（本题不受影响）。","变式建议":"设计压力改 2.5 MPa，试验压力 3.75 MPa，表选 0～6.0 MPa；或介质改为可燃气体，问气密性试验压力。"},{"id":"H2","行业":"化工","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"化工装置输送密度 850 kg/m³ 的物料，质量流量 30 t/h，经济流速取 1.5 m/s，管材为 20# 无缝钢管。","题干":"① 体积流量是多少 m³/h？② 所需内径多少 mm？③ 应选哪个公称直径（内径按 De−2δ 取）？","公式依据":["Q = G/ρ（质量流量换算体积流量）","A = Q/v，D = √(4A/π)","DN100（De108×4）内径 100 mm"],"分步计算":["步骤1：G = 30 t/h = 30 000 kg/h；Q = 30 000/850 = 35.29 m³/h。","步骤2：Q = 35.29/3 600 = 9.804×10⁻³ m³/s；A = 9.804×10⁻³/1.5 = 6.536×10⁻³ m²。","步骤3：D = √(4×6.536×10⁻³/π) = 0.0912 m = 91.2 mm。","步骤4：选 DN100（内径 100 mm），实际流速 1.25 m/s，在经济流速范围内。"],"答案":"35.29 m³/h；内径 91.2 mm；选 DN100","易错点":"① 把 30 t/h 直接当 30 m³/h（差 15%）；② t/h 换算 m³/s 时漏除 3 600；③ 按外径 108 选成 DN80。","变式建议":"密度改 1 200 kg/m³、流量 45 t/h；或已知 DN80 反求流速并判断是否超经济流速。"},{"id":"H3","行业":"化工","板块":"C-安装与受力","难度":"中级","题型":"计算","场景":"化工装置 DN100 蒸汽管（De108×4），两固定支架间长 55 m，安装时 20 ℃，运行温度 150 ℃，α = 1.2×10⁻⁵/℃；设计规定热伸长超过 40 mm 须设补偿器。","题干":"① 热伸长量是多少 mm？② 是否需要设补偿器？③ 采用方形补偿器时，臂长至少取多少（按 2ΔL 估算）？","公式依据":["ΔL = α·L·ΔT","方形补偿器臂长按 2ΔL 估算（工程经验值）","热伸长超过 40 mm 须补偿"],"分步计算":["步骤1：ΔT = 150 − 20 = 130 ℃。","步骤2：ΔL = 1.2×10⁻⁵ × 55 000 mm × 130 = 85.8 mm。","步骤3：85.8 mm > 40 mm，必须设补偿器。","步骤4：方形补偿器臂长 ≥ 2×85.8 = 171.6 mm，工程取 200 mm 以上。"],"答案":"热伸长 85.8 mm；需设补偿器；臂长 ≥171.6 mm（取 200 mm）","易错点":"① ΔT 直接用 150 ℃，伸长量放大 15%；② 长度 55 m 忘换成 55 000 mm，结果差 1 000 倍；③ 85.8 与 40 比大小判反。","变式建议":"管长改 80 m、温度 180 ℃；或改用波纹管补偿器（单个 60 mm），问需要几个。"},{"id":"H4","行业":"化工","板块":"A-识图与尺寸换算","难度":"中级","题型":"综合计算","场景":"输送 5% 盐酸的 DN80 管道，长 42 m；候选 316L 不锈钢管 De89×4（ρ = 7 930 kg/m³），介质中腐蚀速率 0.1 mm/a，设计寿命 10 年，设计压力 1.6 MPa。","题干":"① 该管每米重量和总重各是多少？② 腐蚀裕量取多少？③ 判定 4 mm 壁厚能否满足 10 年寿命与 1.6 MPa 强度。","公式依据":["每米重 = π(D−δ)·δ·ρ","腐蚀裕量 = 腐蚀速率 × 设计寿命","强度所需壁厚按 GB 50316 直管公式估算"],"分步计算":["步骤1：每米重 = π×(0.089−0.004)×0.004×7 930 = 8.47 kg/m。","步骤2：总重 = 8.47×42 = 355.7 kg。","步骤3：腐蚀裕量 = 0.1×10 = 1.0 mm。","步骤4：强度所需壁厚约 0.6 mm（1.6 MPa 下 316L 富余很大），加腐蚀裕量后需 1.6 mm；4 mm 满足，剩余 3 mm 有效壁厚。"],"答案":"8.47 kg/m；总重 355.7 kg；腐蚀裕量 1.0 mm；4 mm 壁厚满足","易错点":"① 每米重用外径 89 直接乘壁厚（未减 δ）；② 腐蚀裕量算成 0.1×10 年再乘 2（双向腐蚀不适用本工况）；③ 只做强度校核、漏腐蚀裕量。","变式建议":"腐蚀速率改 0.25 mm/a、寿命 15 年（裕量 3.75 mm，4 mm 不够）；或改输送 98% 硫酸，问材质取舍。"},{"id":"H5","行业":"化工","板块":"B-下料展开","难度":"高级","题型":"计算判断","场景":"DN200 碳钢蒸汽管（De219×6），设计压力 1.6 MPa、设计温度 200 ℃；20# 钢在该温度许用应力 117 MPa，焊接接头系数 1.0，腐蚀裕量 1.5 mm，钢板负偏差 0.6 mm。按 GB 50316 直管壁厚公式校核。","题干":"① 计算壁厚是多少？② 设计壁厚是多少？③ 判定 De219×6 是否满足要求；④ 若改成 De219×4.5 呢？","公式依据":["t = P·D/(2[σ]φ + P)（D 取外径）","设计壁厚 = 计算壁厚 + 腐蚀裕量 C₁ + 负偏差 C₂","负偏差按钢板标准取值，不可漏"],"分步计算":["步骤1：t = 1.6×219/(2×117×1.0 + 1.6) = 350.4/235.6 = 1.487 mm。","步骤2：设计壁厚 = 1.487 + 1.5 + 0.6 = 3.587 mm。","步骤3：6 mm > 3.587 mm，De219×6 满足。","步骤4：De219×4.5 时 4.5 > 3.587，也满足（但余量仅 0.9 mm，高温蠕变工况宜留裕量）。"],"答案":"计算壁厚 1.49 mm；设计壁厚 3.59 mm；6 mm 满足；4.5 mm 也满足但余量小","易错点":"① 公式里 D 用内径 207 而非外径 219；② 忘加负偏差 C₂；③ 把许用应力按常温取（200 ℃ 下要降）。","变式建议":"设计压力改 2.5 MPa；或温度改 350 ℃（许用应力降到约 100 MPa），重算所需壁厚。"},{"id":"H6","行业":"化工","板块":"D-系统参数","难度":"高级","题型":"计算判断","场景":"氢气压缩机出口：标况流量 500 Nm³/h，表压 0.8 MPa，温度 40 ℃；按 GB 4962，厂区氢气管道流速不宜大于 10 m/s。","题干":"① 工况体积流量是多少 m³/h？② 按 10 m/s 上限所需内径是多少？③ 应选 DN 多少？④ 判定口径选大后流速是否仍合规。","公式依据":["工况流量 = 标况流量 ×(P₀/P)×(T/T₀)（P 用绝压）","A = Q/v，D = √(4A/π)","表压 + 0.1013 = 绝压"],"分步计算":["步骤1：绝压 = 0.8 + 0.1013 = 0.9013 MPa。","步骤2：Q = 500×(0.1013/0.9013)×(313/273) = 64.4 m³/h = 0.01789 m³/s。","步骤3：A = 0.01789/10 = 1.789×10⁻³ m²；D = 47.7 mm。","步骤4：选 DN50（De57×3.5，内径 50 mm），实际流速 9.1 m/s \u003c 10 m/s，合规。"],"答案":"工况 64.4 m³/h；内径 47.7 mm；选 DN50；实际 9.1 m/s 合规","易错点":"① 标况流量直接当工况流量（差 7.8 倍）；② 用表压 0.8 代替绝压 0.9013；③ 温度按 273 K 未修正。","变式建议":"表压改 1.6 MPa；或流量 800 Nm³/h，问是否必须放大到 DN65。"},{"id":"F1","行业":"食品","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"乳品车间 316L 卫生级管道 De51×1.5，输送牛奶，流速 1.5 m/s；内表面 Ra ≤ 0.8 μm，管段长 30 m，自排净坡度 1%。","题干":"① 管道内径是多少？② 体积流量是多少 m³/h？③ 30 m 管段的坡度高差是多少？","公式依据":["D内 = De − 2δ","Q = A·v，A = πD内²/4","高差 h = i·L"],"分步计算":["步骤1：内径 = 51 − 2×1.5 = 48 mm。","步骤2：A = π×0.048²/4 = 1.810×10⁻³ m²；Q = 1.810×10⁻³×1.5 = 2.715×10⁻³ m³/s = 9.77 m³/h。","步骤3：高差 h = 0.01×30 = 0.30 m。","步骤4：卫生管标注 De 为外径，DN50 只是近似，不能直接当内径。"],"答案":"内径 48 mm；流量 9.77 m³/h；高差 0.30 m","易错点":"① 把 DN50 当内径（面积差 6%）；② 1% 坡度算成 1 m 或 0.1 m；③ 卫生管按外径算流量。","变式建议":"管径改 De63.5×1.5、流速 2.0 m/s；或坡度改 0.5%，问 30 m 高差。"},{"id":"F2","行业":"食品","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"食品厂 CIP 清洗站配 2 m³、浓度 1.5% 的 NaOH 清洗液，用 32% 液碱（密度 1.35 kg/L）加水配制，清洗液密度按 1.02 t/m³ 计。","题干":"① 清洗液总质量是多少 kg？② 需要纯 NaOH 多少 kg？③ 需要 32% 液碱多少 kg、多少 L？","公式依据":["m = ρ·V","纯碱量 = 溶液质量 × 浓度","液碱量 = 纯碱量 ÷ 32%"],"分步计算":["步骤1：m = 1 020 kg/m³ × 2 m³ = 2 040 kg。","步骤2：NaOH = 2 040×1.5% = 30.6 kg。","步骤3：32% 液碱 = 30.6/0.32 = 95.6 kg。","步骤4：体积 = 95.6/1.35 = 70.8 L；加水量约 2 040 − 95.6 = 1 944 kg（约 1.94 m³）。"],"答案":"2040 kg；30.6 kg；液碱 95.6 kg（70.8 L）","易错点":"① 用体积比 2 m³×1.5% 直接得当量体积；② 忘乘密度，把 2 m³ 当 2 000 kg；③ 32% 液碱按 32 kg 计。","变式建议":"浓度改 2.0%、罐容 1.5 m³；或改用 50% 液碱，问用量。"},{"id":"F3","行业":"食品","板块":"C-安装与受力","难度":"中级","题型":"计算","场景":"食品厂 UHT 超高温灭菌保温管 DN40（De41×1.5），长 25 m，从 20 ℃ 升至 140 ℃，α = 1.6×10⁻⁵/℃；设计规定热伸长超过 40 mm 须设波纹补偿器，单个补偿量 30 mm。","题干":"① 热伸长量是多少？② 是否超过 40 mm 限值？③ 需要几个补偿器？","公式依据":["ΔL = α·L·ΔT","补偿器个数 = ⌈ΔL ÷ 单个补偿量⌉"],"分步计算":["步骤1：ΔT = 140 − 20 = 120 ℃。","步骤2：ΔL = 1.6×10⁻⁵ × 25 000 mm × 120 = 48 mm。","步骤3：48 mm > 40 mm，需设补偿器。","步骤4：n = 48 ÷ 30 = 1.6，向上取整 ⇒ 2 个（每个承担 24 mm）。"],"答案":"热伸长 48 mm；超过限值；需 2 个补偿器","易错点":"① 不锈钢 α 仍按 1.2×10⁻⁵ 取（UHT 管多为 316L，取 1.6×10⁻⁵）；② 1.6 个直接写 1.6 或取 1 个；③ ΔT 用 140。","变式建议":"管长改 40 m、温度 150 ℃；或单个补偿量改 25 mm，问数量。"},{"id":"F4","行业":"食品","板块":"D-系统参数","难度":"中级","题型":"计算判断","场景":"CIP 清洗回路要求清洗液流速 ≥1.5 m/s 才能形成湍流；泵流量 20 m³/h，现有 DN50（De51×1.5）与 DN65（De70×2）两种管可选。","题干":"① 两种管的内径和流速各是多少？② 是否都满足 ≥1.5 m/s？③ 应选哪种，理由是什么？","公式依据":["D内 = De − 2δ","v = Q/A，A = πD内²/4"],"分步计算":["步骤1：DN50 内径 48 mm，A = 1.810×10⁻³ m²，v = 20/3 600/1.810×10⁻³ = 3.07 m/s。","步骤2：DN65 内径 66 mm，A = 3.421×10⁻³ m²，v = 1.62 m/s。","步骤3：两者均 ≥1.5 m/s，都能形成湍流。","步骤4：判定：选 DN65——流速仍达标，且压降约与 v² 成正比，泵耗显著低于 DN50（3.07² vs 1.62²，约 3.6 倍）。"],"答案":"DN50：3.07 m/s；DN65：1.62 m/s；均达标；选 DN65（压降小、泵耗低）","易错点":"① 只用管径大就“流速不够”下结论（1.62 仍达标）；② 用外径算流速；③ 忽略压降与泵耗，选小管“省钱”。","变式建议":"泵流量改 12 m³/h（DN50 1.84、DN65 0.97，DN65 不达标）；或改 DN80 重算。"},{"id":"F5","行业":"食品","板块":"C-安装与受力","难度":"高级","题型":"计算判断","场景":"食品厂 0.6 MPa 洁净蒸汽主管 DN80（De89×3），长 60 m，设计坡度 0.5% 顺流向，每 20 m 设 1 个疏水点（含末端）。施工队为“省支架”把坡度改成 0.2%。","题干":"① 0.5% 坡度的高差是多少？② 疏水点几个？③ 改成 0.2% 后高差多少？④ 判定改坡度的做法是否可行。","公式依据":["h = i·L","蒸汽主管应顺流向设坡度并在低点、末端设疏水","坡度不足会造成凝水滞留、水击"],"分步计算":["步骤1：h = 0.005×60 = 0.30 m。","步骤2：60 ÷ 20 = 3 个疏水点（含末端）。","步骤3：改 0.2% 后 h = 0.002×60 = 0.12 m。","步骤4：判定：0.12 m 坡度不足以排净凝水，高速蒸汽带动积水形成水击，可击穿管件、震裂支架；不得为省支架擅自改坡。"],"答案":"0.30 m；3 个；0.12 m；不可行（水击风险）","易错点":"① 疏水点按 60/20 = 3 段算成 3 个却漏末端（本题含末端仍 3 个，注意题干口径）；② 0.5% 算成 0.5 m；③ 只看“能排一点水”就认可改坡。","变式建议":"管长 90 m、坡度 0.3%；或改为饱和蒸汽 vs 过热蒸汽，问疏水点间距差异。"},{"id":"F6","行业":"食品","板块":"A-识图与尺寸换算","难度":"高级","题型":"计算判断","场景":"灌装线配制 500 L、0.5% 过氧乙酸消毒液，用 15% 过氧乙酸原液（密度 1.1 kg/L）稀释；316L 管道允许接触浓度 ≤0.5%、单次 ≤30 min。新员工按“500×0.5% = 2.5 L 原液”配制。","题干":"① 按 15% 原液计，实际需原液多少 L？② 需加水多少 L？③ 新员工算法错在哪？④ 若误配成 1.0%，对 316L 有何影响？","公式依据":["稀释定律：C₁V₁ = C₂V₂","原液体积 = 目标纯量 ÷ 原液浓度"],"分步计算":["步骤1：目标纯过氧乙酸 = 500×0.5% = 2.5 L 当量。","步骤2：原液 = 2.5 ÷ 15% = 16.7 L。","步骤3：加水 = 500 − 16.7 = 483.3 L。","步骤4：判定：新员工把“原液当 100%”算，只加 2.5 L，浓度只有 0.075%，消毒失效。","步骤5：误配 1.0% 时浓度翻倍，过氧乙酸对 316L 的腐蚀速率显著上升，超出 ≤0.5% 的接触限值，可能点蚀。"],"答案":"原液 16.7 L；加水 483.3 L；新员工漏算 15% 浓度；1.0% 会加剧 316L 腐蚀","易错点":"① 忽略原液浓度 15%（最常见）；② 用质量浓度与体积浓度混算；③ 认为“浓度高一点消毒更彻底”，忽略材质腐蚀限值。","变式建议":"原液改 5%、目标 0.3%；或问 200 L 小批量的原液量。"},{"id":"P1","行业":"制药","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"制药纯化水循环管路 DN25（De25.4×1.2），GMP 要求循环流速 ≥1.0 m/s 以抑制生物膜；管长 80 m，坡度 1%。","题干":"① 管道内径是多少？② 满足 1.0 m/s 的最小循环流量是多少 m³/h？③ 80 m 管段的坡度高差是多少？","公式依据":["D内 = De − 2δ","Q = A·v","h = i·L"],"分步计算":["步骤1：内径 = 25.4 − 2×1.2 = 23 mm。","步骤2：A = π×0.023²/4 = 4.155×10⁻⁴ m²；Q = 4.155×10⁻⁴×1.0 = 4.155×10⁻⁴ m³/s = 1.50 m³/h。","步骤3：h = 0.01×80 = 0.80 m。","步骤4：实际选泵宜留裕量（如 1.8～2.0 m³/h），保证最不利点仍 ≥1.0 m/s。"],"答案":"内径 23 mm；最小流量 1.50 m³/h；高差 0.80 m","易错点":"① DN25 当内径 25（面积差 18%）；② 坡度 1% 算成 0.1 m；③ 只按平均流速选泵，未考虑最不利环路。","变式建议":"管径改 De31.8×1.5、流速 1.2 m/s；或管长 120 m，问高差与泵扬程。"},{"id":"P2","行业":"制药","板块":"D-系统参数","难度":"初级","题型":"计算","场景":"无菌灌装线用 0.3 MPa（表压）洁净氮气吹扫，DN15 不锈钢管（De18×1.5），标况流量 6 Nm³/h，温度 25 ℃。","题干":"① 管道内径是多少？② 工况体积流量是多少 m³/h？③ 管内流速是多少 m/s？","公式依据":["工况流量 = 标况流量 × P₀/P（温度接近常温可忽略温度修正）","P = 表压 + 0.1013","v = Q/A"],"分步计算":["步骤1：内径 = 18 − 2×1.5 = 15 mm。","步骤2：绝压 = 0.3 + 0.1013 = 0.4013 MPa；Q = 6×0.1013/0.4013 = 1.515 m³/h。","步骤3：A = π×0.015²/4 = 1.767×10⁻⁴ m²；v = 1.515/3 600/1.767×10⁻⁴ = 2.38 m/s。","步骤4：洁净氮气吹扫流速一般 2～5 m/s，2.38 m/s 在合理范围。"],"答案":"内径 15 mm；工况 1.52 m³/h；流速 2.38 m/s","易错点":"① 用表压 0.3 当绝压（流量偏大 34%）；② 标况与工况不换算；③ 内径按 DN15 取 15（本题恰好 15，但 De18×1.5 才是依据）。","变式建议":"表压改 0.6 MPa；或流量改 10 Nm³/h，问流速是否超 5 m/s。"},{"id":"P3","行业":"制药","板块":"D-系统参数","难度":"中级","题型":"计算判断","场景":"纯化水系统：储罐 2 m³，循环泵 3 m³/h，管路总容积 0.35 m³；企业内控要求回水停留时间不超过 4 h。","题干":"① 系统总容积是多少？② 循环一次需要多少分钟？③ 判定停留时间是否满足内控要求。","公式依据":["系统总容积 = 储罐 + 管路","循环一次时间 = 总容积 ÷ 循环流量","停留时间按最不利（满罐、无用水）计"],"分步计算":["步骤1：总容积 = 2 + 0.35 = 2.35 m³。","步骤2：循环一次 = 2.35 ÷ 3 = 0.783 h = 47 min。","步骤3：满罐静止时最长停留约 47 min ≪ 4 h，满足内控。","步骤4：若储罐扩大到 12 m³，则 12.35/3 = 4.12 h，超内控，需提高循环流量或降低罐容。"],"答案":"总容积 2.35 m³；一次循环 47 min；满足 4 h 内控","易错点":"① 只算管路 0.35 m³；② 小时与分钟换算错（0.783 h 当 78 min）；③ 忽略罐容，只按流速判断。","变式建议":"储罐改 8 m³，问是否超 4 h；或循环泵改 5 m³/h 重算。"},{"id":"P4","行业":"制药","板块":"C-安装与受力","难度":"中级","题型":"计算","场景":"纯蒸汽灭菌（SIP）DN50 管路 30 m，每次需维持 121 ℃、30 min；按管壁升温与散热估算耗汽 12 kg/h，另加 20% 裕量；工业蒸汽 180 元/t。","题干":"① 30 min 耗汽多少 kg？② 加 20% 裕量后多少 kg？③ 单次灭菌蒸汽成本多少元？","公式依据":["耗汽量 = 小时耗汽 × 时间","含裕量 = 耗汽量 ×(1 + 裕量率)","成本 = 质量(t) × 单价"],"分步计算":["步骤1：30 min = 0.5 h；耗汽 = 12×0.5 = 6 kg。","步骤2：含裕量 = 6×1.2 = 7.2 kg。","步骤3：7.2 kg = 0.0072 t；成本 = 0.0072×180 = 1.296 元。","步骤4：成本极低，SIP 的主要成本在纯蒸汽制备与验证，不在燃料。"],"答案":"6 kg；7.2 kg；约 1.30 元","易错点":"① 30 min 当 30 h；② 裕量除 1.2 而非乘 1.2；③ kg 与 t 换算错 1 000 倍。","变式建议":"灭菌时间改 45 min、耗汽 18 kg/h；或问 30 次/月 的月成本。"},{"id":"P5","行业":"制药","板块":"A-识图与尺寸换算","难度":"高级","题型":"计算判断","场景":"C 级洁净区纯化水支管 DN20（De20×1.2），从主管接出至用水点，管长 3.5 m，坡度 1%；主管中心标高 1.500 m，用水点隔膜阀中心标高 1.465 m。GMP 要求支管死角长度不大于 3D（D 取支管外径）。","题干":"① 3.5 m 支管的坡度高差是多少？② 按 1% 坡度用水点标高应为多少？③ 判定该支管死角是否合规。④ 应如何整改？","公式依据":["h = i·L","死角长度 ≤ 3D（D 为支管外径）","标高 = 主管标高 − 高差"],"分步计算":["步骤1：h = 0.01×3.5 = 0.035 m。","步骤2：用水点标高应为 1.500 − 0.035 = 1.465 m，与题给一致（坡度自洽）。","步骤3：3D = 3×20 = 60 mm；实际支管 3 500 mm，远超 60 mm，死角不合规。","步骤4：整改：把用水点移到距主管 ≤60 mm 处，或改为环网/缩短支管，禁止用长支管“够标高”。"],"答案":"高差 0.035 m；标高 1.465 m；死角 3.5 m ≫ 60 mm，不合规；应缩短支管 ≤60 mm 或改环网","易错点":"① 3D 用 DN20 的内径 17.6 mm（应取外径 20 mm）；② 只看坡度达标就认为合规；③ 标高方向算反（1.500 + 0.035）。","变式建议":"支管改 0.05 m，问是否合规；或主管标高 1.200，问用水点最低标高。"},{"id":"P6","行业":"制药","板块":"D-系统参数","难度":"高级","题型":"计算判断","场景":"注射用水系统：多效蒸馏水机产水 500 L/h，每天生产 6 h；储罐 3 m³；灌装线高峰用水 800 L/h，持续 4 h。纯化水机补水 1.5 m³/h（生产时段运行）。","题干":"① 日产注射用水多少 L？② 3 m³ 储罐可满足几天用量？③ 高峰 4 h 用水 3 200 L，储罐是否够？④ 应如何配置？","公式依据":["日产量 = 小时产量 × 生产小时","高峰用水量 = 高峰流量 × 持续时间","储罐有效容积应覆盖高峰与补水缺口"],"分步计算":["步骤1：日产 = 500×6 = 3 000 L/d。","步骤2：储罐 3 m³ = 3 000 L，恰好 1 天用量，无故障缓冲。","步骤3：高峰 4 h 用水 = 800×4 = 3 200 L > 3 000 L，仅靠储罐不够。","步骤4：判定与配置：生产时段纯化水补水 1.5 m³/h 可补 6 m³/d，但注射用水需经蒸馏，建议储罐 ≥5 m³（含 1 天缓冲 + 高峰余量）或错峰灌装、提高蒸馏水机出力。"],"答案":"日产 3 000 L；储罐仅够 1 天；高峰 3 200 L 不够；建议储罐 ≥5 m³ 或错峰/提产能","易错点":"① 储罐 3 m³ 当 3 000 L 后又按“够 1 天”直接判够（忽略高峰）；② 把纯化水补水当注射用水；③ 用平均流量代替峰值。","变式建议":"高峰改 600 L/h×5 h；或蒸馏水机改 800 L/h，问储罐最小容积。"}];
+const TRAPS = [{"no":1,"title":"弯管展开按中心径，不是外径或内径","body":"弯管展开长度 L=πRθ/180，R 取中心弯曲半径（图纸未注时按 1.5D，D 为管外径）。用外径或内径展开，弯头会“昂头”或“勾头”，且展开长度偏大/偏小。","keys":{},"qs":["A3","B1","B4","B5","B6","E5"]},{"no":2,"title":"45° 的 1.414 只求斜边投影，净料还要减管件占用","body":"1.414 只用于把水平/垂直投影换算成斜边长度；算净下料时还要扣弯头占用（90° 扣 2R，45° 单端扣 0.414R）。斜段已给实长时再乘 1.414 属重复换算。","keys":{},"qs":["A2","A6","B2","E3","E6"]},{"no":3,"title":"压力表量程留 1.5～2 倍裕度，不等于试验压力","body":"建筑给水试验压力取 1.5 倍工作压力（0.6～1.0 MPa），工业管道取 1.5 倍设计压力且不小于 0.6 MPa；压力表量程按试验压力的 1.5～2 倍选，精度不低于 1.6 级。","keys":{},"qs":["C1","C5","H1"]},{"no":4,"title":"支架数量向上取整，总重＝个数×单重","body":"支架数 = ⌈管长÷间距⌉ + 1（两端必设）；支架总重 = 个数 × 单个重量，不能用“管长×每米管重”代替——后者是管道自重，两者相差一个数量级。","keys":{},"qs":["C2","C3","C4","C6","D4","E1"]},{"no":5,"title":"板厚处理：板材按中心径，现成管材按外径加样板纸厚","body":"钢板卷制展开直径 = 外径 − 壁厚；现成管材按外径展开并加样板纸厚。气割/等离子与锯割的断面圆直径选取不同，选错会使弯头角度偏差、对口错边。","keys":{},"qs":["B5","B6","E5"]},{"no":6,"title":"材料消耗量含损耗率，不只是净用量","body":"消耗量 = 净用量 ×（1 + 损耗率）；管材、管件、型钢的损耗率不同，不能一刀切。管件个数向上取整，钢管按米计。","keys":{},"qs":["D4","E4"]},{"no":7,"title":"单线图尺寸是管件中心距，下料必须做减法","body":"图上标注的是中心到中心距离，已包含管件弧段。净下料 = 中心距之和 − Σ管件占用；把中心距当净料直接下料，必然顶死或二次切割。","keys":{},"qs":["A3","A5","A6","B1","B3","B4"]}];
+const BUILD_VERSION = "2026-10-17T11:58:42.912Z";
+(function(){
+// 每日卷生成器：按日期种子，为“5 板块 × 3 难度”各生成 1 道参数化新题（共 15 题）。
+// 纯函数、无依赖，可在 Node 与浏览器中共用（构建时内联到页面）。
+// 每个模板声明 variants，生成时用日期种子挑一个，保证同一天同一模板结果稳定。
+
+const r1 = (x) => Math.round(x * 10) / 10;
+const r3 = (x) => Math.round(x * 1000) / 1000;
+const r2 = (x) => Math.round(x * 100) / 100;
+const fmt = (x) => (Math.abs(x) >= 1000 ? String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : String(x));
+
+function hash(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ---------------- 模板 ---------------- */
+const T = [];
+
+// A 初级：规格换算
+T.push({
+  board: 'A', level: '初级',
+  variants: [
+    {
+      行业: '通用',
+      scen: (p) => p.DN >= 150
+        ? `公共建筑排水立管标注 φ${p.DN}，排水铸铁管 De${p.De}×${p.d}，接 2 个卫生间排水横支管。`
+        : `住宅卫生间排水横支管标注 φ${p.DN}，排水铸铁管 De${p.De}×${p.d}，连接坐便器（当量 4）与地漏（当量 1）。`,
+      q: '该管段公称直径是多少？内径是多少？过水断面面积是多少 cm²？',
+    },
+    { 行业: '化工', scen: (p) => `化工装置物料管 DN${p.DN}，20# 无缝钢管 De${p.De}×${p.d}，设计压力 1.0 MPa，介质密度 850 kg/m³。`, q: '该管公称直径、内径各是多少？过水断面面积是多少 cm²？' },
+    { 行业: '食品', scen: (p) => `乳品车间卫生级管道 DN${p.DN}，316L 不锈钢 De${p.De}×${p.d}，内表面 Ra ≤ 0.8 μm，输送牛奶。`, q: '该管公称直径、内径各是多少？过水断面面积是多少 cm²？' },
+    { 行业: '制药', scen: (p) => `制药纯化水循环管 DN${p.DN}，316L 不锈钢 De${p.De}×${p.d}，GMP 要求循环流速 ≥1.0 m/s。`, q: '该管公称直径、内径各是多少？过水断面面积是多少 cm²？' },
+  ],
+  params: [
+    { DN: 50, De: 50, d: 3.5 },
+    { DN: 65, De: 76, d: 3.5 },
+    { DN: 100, De: 108, d: 4 },
+    { DN: 150, De: 159, d: 4.5 },
+  ],
+  make(p) {
+    const Di = p.De - 2 * p.d;
+    const A = Math.PI * Di * Di / 4 / 100;
+    return {
+      场景: null,
+      题干: null,
+      公式依据: ['公称直径 DN 为标注值，单位 mm', '内径 D内 = De − 2δ', 'A = πD内²/4'],
+      分步计算: [
+        `步骤1：公称直径 DN${p.DN}，对应外径 De = ${p.De} mm。`,
+        `步骤2：内径 D内 = ${p.De} − 2×${p.d} = ${Di} mm。`,
+        `步骤3：A = π×${Di}²/4 = ${fmt(r2(A * 100))} mm² = ${r2(A)} cm²。`,
+        `步骤4：DN 只是名义尺寸，不能直接平方算面积。`,
+      ],
+      答案: `DN${p.DN}；内径 ${Di} mm；过水断面 ${r2(A)} cm²`,
+      易错点: `① 把 DN${p.DN} 当内径直接平方（面积偏差大）；② 面积换算把 mm² 当 cm²；③ 忽略壁厚 ${p.d} mm。`,
+      变式建议: `管径改 DN${p.DN === 100 ? 150 : 100} 重算；或已知流速求流量。`,
+    };
+  },
+});
+
+// A 中级：45° 斜管与投影
+T.push({
+  board: 'A', level: '中级',
+  variants: [
+    { 行业: '通用', scen: (p) => `水平干管标高 −0.900，分支处 45° 下翻，两管中心水平偏距 ${p.b} mm；下翻前水平干管已画 ${p.a} mm。`, q: '① 45° 斜管的实际长度是多少 mm？② 该段管道的水平总投影长度是多少 mm？' },
+    { 行业: '化工', scen: (p) => `化工管廊上 DN100 管道绕过立柱：水平段 ${p.a} mm 后 45° 斜向偏移 ${p.b} mm 再回正。`, q: '① 45° 斜段实长是多少 mm？② 斜段的水平投影是多少 mm？' },
+    { 行业: '食品', scen: (p) => `食品车间输送管为避开设备基础，水平段 ${p.a} mm 后以 45° 偏移 ${p.b} mm。`, q: '① 斜段实长是多少 mm？② 水平总投影是多少 mm？' },
+    { 行业: '制药', scen: (p) => `洁净区管道水平段 ${p.a} mm 后 45° 偏转 ${p.b} mm 进入管井。`, q: '① 斜段实长是多少 mm？② 斜段水平投影是多少 mm？' },
+  ],
+  params: [
+    { a: 4000, b: 600 },
+    { a: 6000, b: 300 },
+    { a: 3500, b: 800 },
+    { a: 8000, b: 500 },
+  ],
+  make(p) {
+    const L = r1(p.b * 1.414);
+    return {
+      公式依据: ['45° 等腰直角：斜边 = 投影 × 1.414', '水平总投影 = 直线段 + 斜段投影'],
+      分步计算: [
+        `步骤1：斜段实长 = ${p.b} × 1.414 = ${L} mm。`,
+        `步骤2：斜段水平投影 = ${p.b} mm（与偏距相等）。`,
+        `步骤3：水平总投影 = ${p.a} + ${p.b} = ${p.a + p.b} mm。`,
+        `步骤4：斜段实长只用于算料，不能计入水平投影。`,
+      ],
+      答案: `斜段 ${L} mm；水平总投影 ${p.a + p.b} mm`,
+      易错点: '① 把 1.414 又乘到总投影上（重复换算）；② 漏掉斜段自身的水平投影；③ 把斜长当投影。',
+      变式建议: '偏距改 300 mm 或 1 000 mm；或改 30°/60° 斜管，用 sin/cos 求斜长。',
+    };
+  },
+});
+
+// A 高级：立管逐层扣弯头
+T.push({
+  board: 'A', level: '高级',
+  variants: [
+    { 行业: '通用', scen: (p) => `管井立管：${p.floors.length} 层立管中心距 ${p.floors.join('、')}，楼板厚 120 mm，每层设 1 个 90° 弯让位（R = ${p.k}D，外径 ${p.De} mm）。施工员按层高直接相加下料。`, q: '① 立管中心距总长是多少？② 弯头共占用多少？③ 净下料长度是多少？④ 判定“直接按层高下料”是否正确。' },
+    { 行业: '化工', scen: (p) => `化工框架立管：${p.floors.length} 层，中心距 ${p.floors.join('、')}，每层 1 个 90° 弯（R = ${p.k}D，De${p.De}），楼板厚 120 mm。`, q: '① 中心距总长？② 弯头占用？③ 净下料长度？④ 楼板厚要不要逐层加？' },
+    { 行业: '食品', scen: (p) => `食品厂多层车间立管：${p.floors.length} 层中心距 ${p.floors.join('、')}，每层 1 个 90° 卫生弯头（R = ${p.k}D，De${p.De}）。`, q: '① 中心距总长？② 弯头占用？③ 净下料长度？' },
+    { 行业: '制药', scen: (p) => `制药洁净区立管：${p.floors.length} 层中心距 ${p.floors.join('、')}，每层 1 个 90° 弯（R = ${p.k}D，De${p.De}），坡度与死角需在安装时校核。`, q: '① 中心距总长？② 弯头占用？③ 净下料长度？' },
+  ],
+  params: [
+    { floors: [5800, 6000, 6000], De: 114, k: 1.5 },
+    { floors: [4200, 4200, 4200, 4200], De: 89, k: 1.5 },
+    { floors: [6000, 6000], De: 159, k: 2 },
+    { floors: [3600, 3600, 3600, 3600, 3600], De: 57, k: 1.5 },
+  ],
+  make(p) {
+    const total = p.floors.reduce((a, b) => a + b, 0);
+    const R = p.k * p.De;
+    const occ = p.floors.length * 2 * R;
+    const net = total - occ;
+    return {
+      公式依据: ['中心距总长 = 各层中心距之和', '90° 弯单端占用 = R = kD', '净下料 = 中心距 − Σ弯头占用'],
+      分步计算: [
+        `步骤1：中心距总长 = ${p.floors.join(' + ')} = ${total} mm。`,
+        `步骤2：R = ${p.k}×${p.De} = ${R} mm；${p.floors.length} 个弯共 ${p.floors.length * 2}×${R} = ${occ} mm。`,
+        `步骤3：净下料 = ${total} − ${occ} = ${net} mm = ${r3(net / 1000)} m。`,
+        `步骤4：判定：按层高直接下 ${total} mm 会多 ${occ} mm；楼板厚 120 mm 已含在层高内，不得重复加。`,
+      ],
+      答案: `中心距 ${total} mm；弯头占用 ${occ} mm；净下料 ${r2(net / 1000)} m；直接按层高下料错误`,
+      易错点: '① 不扣弯头占用；② 楼板厚重复计量；③ 弯头只扣单端。',
+      变式建议: '层数、管径、R 系数改任一参数重算。',
+    };
+  },
+});
+
+// B 初级：90° 弯弧长 + 夹持直段
+T.push({
+  board: 'B', level: '初级',
+  variants: [
+    { 行业: '通用', scen: (p) => `DN${p.DN} 无缝钢管（De${p.De}×${p.d}）热煨 90° 弯，弯曲半径 ${p.k}D，两端各留 ${p.s} mm 直段。`, q: '① 中心弯曲半径？② 展开弧长？③ 下料长度？' },
+    { 行业: '化工', scen: (p) => `化工管道预制：De${p.De}×${p.d} 20# 钢管煨 90°，R = ${p.k}D，两端夹持直段各 ${p.s} mm。`, q: '① 弯曲半径？② 展开弧长？③ 下料长度？' },
+    { 行业: '食品', scen: (p) => `食品卫生管 De${p.De}×${p.d} 制作 90° 弯，R = ${p.k}D，两端留 ${p.s} mm 直段以便卡箍连接。`, q: '① 弯曲半径？② 展开弧长？③ 下料长度？' },
+    { 行业: '制药', scen: (p) => `洁净管道 De${p.De}×${p.d} 煨 90°，R = ${p.k}D，两端各留 ${p.s} mm 直段。`, q: '① 弯曲半径？② 展开弧长？③ 下料长度？' },
+  ],
+  params: [
+    { DN: 100, De: 108, d: 4, k: 1.5, s: 100 },
+    { DN: 50, De: 57, d: 3.5, k: 1.5, s: 80 },
+    { DN: 150, De: 159, d: 4.5, k: 2, s: 120 },
+    { DN: 80, De: 89, d: 4, k: 1.5, s: 100 },
+  ],
+  make(p) {
+    const R = p.k * p.De;
+    const L = r1(Math.PI * R / 2);
+    return {
+      公式依据: ['D 取外径', 'R = kD', 'L = πRθ/180（θ = 90°）', '下料 = 弧长 + 两端直段'],
+      分步计算: [
+        `步骤1：R = ${p.k}×${p.De} = ${R} mm。`,
+        `步骤2：L = π×${R}×90/180 = ${L} mm。`,
+        `步骤3：两端直段 2×${p.s} = ${2 * p.s} mm。`,
+        `步骤4：下料长度 = ${L} + ${2 * p.s} = ${r1(L + 2 * p.s)} mm。`,
+      ],
+      答案: `R = ${R} mm；弧长 ${L} mm；下料 ${r1(L + 2 * p.s)} mm`,
+      易错点: `① 用 DN${p.DN} 当外径算 R（弧长偏小）；② 忘加夹持直段；③ 把直段也按弧长算。`,
+      变式建议: 'R 改 3D 或角度改 45° 重算。',
+    };
+  },
+});
+
+// B 中级：45° + 90° 异半径
+T.push({
+  board: 'B', level: '中级',
+  variants: [
+    { 行业: '通用', scen: (p) => `De${p.De}×${p.d} 预制件：45° 弯 R₁ = ${p.k1}D，90° 弯 R₂ = ${p.k2}D，两弯间中心距 ${p.L} mm，两端各留 ${p.s} mm。`, q: '① 两弯弧长？② 半径差？③ 总下料长度？' },
+    { 行业: '化工', scen: (p) => `化工管段 De${p.De}×${p.d}：45° 弯（R = ${p.k1}D）接 90° 弯（R = ${p.k2}D），中间直段 ${p.L} mm，两端 ${p.s} mm。`, q: '① 弧长各多少？② 半径差？③ 总下料？' },
+    { 行业: '食品', scen: (p) => `食品卫生管 De${p.De}×${p.d}：45°+90° 组合弯，R 分别为 ${p.k1}D、${p.k2}D，中间 ${p.L} mm。`, q: '① 弧长各多少？② 半径差？③ 总下料？' },
+    { 行业: '制药', scen: (p) => `洁净管 De${p.De}×${p.d} 预制：45° 弯 R = ${p.k1}D、90° 弯 R = ${p.k2}D，间距 ${p.L} mm。`, q: '① 弧长各多少？② 半径差？③ 总下料？' },
+  ],
+  params: [
+    { De: 89, d: 4, k1: 2, k2: 1.5, L: 3000, s: 100 },
+    { De: 133, d: 4, k1: 3, k2: 1.5, L: 2500, s: 120 },
+    { De: 57, d: 3.5, k1: 3, k2: 1.5, L: 1800, s: 80 },
+    { De: 159, d: 4.5, k1: 2.5, k2: 1.5, L: 3200, s: 120 },
+  ],
+  make(p) {
+    const R1 = p.k1 * p.De, R2 = p.k2 * p.De;
+    const L1 = r1(Math.PI * R1 * 45 / 180), L2 = r1(Math.PI * R2 / 2);
+    const total = r1(p.L + L1 + L2 + 2 * p.s);
+    return {
+      公式依据: ['L = πRθ/180', '总下料 = 直段 + Σ弧长 + 两端直段'],
+      分步计算: [
+        `步骤1：R₁ = ${p.k1}×${p.De} = ${R1} mm，L₁ = π×${R1}×45/180 = ${L1} mm。`,
+        `步骤2：R₂ = ${p.k2}×${p.De} = ${R2} mm，L₂ = π×${R2}×90/180 = ${L2} mm。`,
+        `步骤3：半径差 = ${R1} − ${R2} = ${R1 - R2} mm。`,
+        `步骤4：总下料 = ${p.L} + ${L1} + ${L2} + ${2 * p.s} = ${total} mm。`,
+      ],
+      答案: `弧长 ${L1} mm 与 ${L2} mm；半径差 ${R1 - R2} mm；总下料 ${total} mm`,
+      易错点: '① 两弯套用同一 R；② 用公称直径代替外径；③ 忘加两端夹持直段。',
+      变式建议: '两弯角度改 60°/90° 重算。',
+    };
+  },
+});
+
+// B 高级：实测弧长 / 板材 vs 现成管材
+T.push({
+  board: 'B', level: '高级',
+  variants: [
+    { 行业: '通用', scen: (p) => `De${p.De}×${p.d} 预制件中心距 ${p.L} mm，含 1 个 90° 弯与 1 个 45° 弯；平台放样实测两弯中心弧长分别为 ${p.a1} mm、${p.a2} mm。规定：现成管材按外径加样板纸厚，板材卷制按中心径（外径 − 壁厚）。`, q: '① 净下料长度？② 实测弧长是什么量？③ 板材卷制展开直径取多少？' },
+    { 行业: '化工', scen: (p) => `化工管段 De${p.De}×${p.d}，中心距 ${p.L} mm，实测 90° 弯弧长 ${p.a1} mm、45° 弯弧长 ${p.a2} mm；车间可卷板也可用现成管。`, q: '① 净下料？② 两种料源展开直径分别取什么？③ 料单能否互用？' },
+    { 行业: '食品', scen: (p) => `卫生管 De${p.De}×${p.d}，中心距 ${p.L} mm，实测两弯弧长 ${p.a1}/${p.a2} mm；板材卷制与现成管材并存。`, q: '① 净下料？② 板材展开直径？③ 混用有何后果？' },
+    { 行业: '制药', scen: (p) => `洁净管 De${p.De}×${p.d}，中心距 ${p.L} mm，实测 90° 弯中心弧长 ${p.a1} mm、45° 弯 ${p.a2} mm。`, q: '① 净下料？② 实测弧长与弯曲半径的关系？③ 板材卷制展开直径？' },
+  ],
+  params: [
+    { De: 159, d: 4.5, L: 15200, a1: 1040, a2: 350 },
+    { De: 219, d: 6, L: 22000, a1: 1450, a2: 480 },
+    { De: 108, d: 4, L: 9800, a1: 706, a2: 235 },
+  ],
+  make(p) {
+    const net = p.L - p.a1 - p.a2;
+    const Dm = p.De - p.d;
+    return {
+      公式依据: ['实测中心弧长即弯头占用长度', '净下料 = 中心距 − Σ实测弧长', '板材卷制展开直径 = 外径 − 壁厚'],
+      分步计算: [
+        `步骤1：Σ占用 = ${p.a1} + ${p.a2} = ${p.a1 + p.a2} mm。`,
+        `步骤2：净下料 = ${p.L} − ${p.a1 + p.a2} = ${net} mm。`,
+        `步骤3：实测弧长是弯头中心弧长，不是半径；半径约 ${r1(1.5 * p.De)} mm（R = 1.5D）。`,
+        `步骤4：板材卷制展开直径 = ${p.De} − ${p.d} = ${Dm} mm；现成管材取外径 ${p.De} mm。`,
+      ],
+      答案: `净下料 ${net} mm；实测弧长为弯头中心弧长；板材展开直径 ${Dm} mm`,
+      易错点: '① 把实测弧长当弯曲半径；② 只扣一个弯头；③ 板材卷制错用外径展开。',
+      变式建议: '换 De、中心距、弧长任一组重算。',
+    };
+  },
+});
+
+// C 初级：试压压力与压力表
+T.push({
+  board: 'C', level: '初级',
+  variants: [
+    { 行业: '通用', scen: (p) => `室内给水系统工作压力 ${p.P} MPa；按 GB 50242 做水压试验，稳压 10 min 后降至工作压力检查。`, q: '① 试验压力取多少？② 选量程多大的压力表？③ 为什么不能用量程等于试验压力的表？' },
+    { 行业: '化工', scen: (p) => `化工管道设计压力 ${p.P} MPa，按 GB 50235 做液压试验；介质为水。`, q: '① 试验压力？② 压力表量程？③ 与建筑给水取值有何不同？' },
+    { 行业: '食品', scen: (p) => `食品厂工艺管道（不锈钢）设计压力 ${p.P} MPa，按 GB 50235 液压试验。`, q: '① 试验压力？② 压力表量程与精度？' },
+    { 行业: '制药', scen: (p) => `制药洁净公用工程管道设计压力 ${p.P} MPa，按 GB 50235 试压。`, q: '① 试验压力？② 压力表量程？③ 试压后如何排净防残留？' },
+  ],
+  params: [
+    { P: 0.6, kind: 'building' },
+    { P: 0.8, kind: 'building' },
+    { P: 1.0, kind: 'industry' },
+    { P: 1.6, kind: 'industry' },
+  ],
+  make(p) {
+    const isB = p.kind === 'building';
+    const calc = r2(p.P * 1.5);
+    const test = isB ? Math.min(Math.max(calc, 0.6), 1.0) : Math.max(calc, 0.6);
+    const lo = r2(test * 1.5), hi = r2(test * 2);
+    const gauges = isB ? [0.6, 1.0, 1.6, 2.5] : [1.0, 1.6, 2.5, 4.0, 6.0];
+    const pick = gauges.find((g) => g >= hi) || gauges[gauges.length - 1];
+    return {
+      公式依据: [
+        isB ? '试验压力 = 1.5×工作压力，且 0.6～1.0 MPa（GB 50242）' : '试验压力 = 1.5×设计压力，且不小于 0.6 MPa（GB 50235）',
+        '压力表量程 = 1.5～2 倍试验压力，精度 ≥1.6 级',
+      ],
+      分步计算: [
+        `步骤1：1.5×${p.P} = ${calc} MPa。`,
+        `步骤2：${isB ? `受 1.0 MPa 上限约束，取 ${test} MPa` : `不小于 0.6 MPa，取 ${test} MPa`}。`,
+        `步骤3：量程范围 = ${test}×1.5～${test}×2 = ${lo}～${hi} MPa。`,
+        `步骤4：选 0～${pick.toFixed(1)} MPa（1.6 级）。`,
+      ],
+      答案: `试验压力 ${test} MPa；压力表 0～${pick.toFixed(1)} MPa、1.6 级`,
+      易错点: '① 表量程等于试验压力；② 建筑与工业规范混用；③ 忘乘 1.5。',
+      变式建议: '工作压力改 0.4 或 1.2 MPa 重算。',
+    };
+  },
+});
+
+// C 中级：热伸长与补偿器
+T.push({
+  board: 'C', level: '中级',
+  variants: [
+    { 行业: '通用', scen: (p) => `DN300 蒸汽管，两固定支架间 ${p.L} m，安装 ${p.t1} ℃、运行 ${p.t2} ℃，α = ${p.alpha}×10⁻⁵/℃；填料式补偿器单个允许 ${p.cap} mm，预拉伸取 50%。`, q: '① 热伸长？② 需几个补偿器？③ 预拉伸量？' },
+    { 行业: '化工', scen: (p) => `化工蒸汽管 ${p.L} m，安装 ${p.t1} ℃、运行 ${p.t2} ℃，α = ${p.alpha}×10⁻⁵/℃，单个补偿器 ${p.cap} mm。`, q: '① 热伸长？② 补偿器数量？③ 预拉伸 50% 时多少？' },
+    { 行业: '食品', scen: (p) => `食品厂 UHT 保温管 ${p.L} m，${p.t1} ℃→${p.t2} ℃，α = ${p.alpha}×10⁻⁵/℃。`, q: (pp) => `① 热伸长？② 是否超 40 mm 限值？③ 单个补偿 ${pp.cap} mm 时需几个？` },
+    { 行业: '制药', scen: (p) => `制药纯蒸汽管 ${p.L} m，${p.t1} ℃→${p.t2} ℃，α = ${p.alpha}×10⁻⁵/℃，设计限值 40 mm。`, q: '① 热伸长？② 是否需补偿？③ 补偿器数量？' },
+  ],
+  params: [
+    { L: 100, t1: 20, t2: 120, alpha: 1.2, cap: 50 },
+    { L: 55, t1: 20, t2: 150, alpha: 1.2, cap: 60 },
+    { L: 25, t1: 20, t2: 140, alpha: 1.6, cap: 30 },
+    { L: 80, t1: 15, t2: 180, alpha: 1.2, cap: 80 },
+  ],
+  make(p) {
+    const dT = p.t2 - p.t1;
+    const dL = r1(p.alpha * 1e-5 * p.L * 1000 * dT);
+    const n = Math.max(1, Math.ceil(dL / p.cap));
+    const pre = r1(dL * 0.5);
+    return {
+      公式依据: ['ΔL = α·L·ΔT', 'n = ⌈ΔL ÷ 单个补偿量⌉', '预拉伸取 50%'],
+      分步计算: [
+        `步骤1：ΔT = ${p.t2} − ${p.t1} = ${dT} ℃。`,
+        `步骤2：ΔL = ${p.alpha}×10⁻⁵ × ${p.L * 1000} mm × ${dT} = ${dL} mm。`,
+        `步骤3：n = ${dL} ÷ ${p.cap} = ${r2(dL / p.cap)}，向上取整 ⇒ ${n} 个。`,
+        `步骤4：预拉伸 = 0.5×${dL} = ${pre} mm（均摊每个 ${r1(pre / n)} mm）。`,
+      ],
+      答案: `热伸长 ${dL} mm；补偿器 ${n} 个；预拉伸 ${pre} mm`,
+      易错点: '① ΔT 直接用运行温度；② 小数不取整；③ 预拉伸取 100%。',
+      变式建议: '安装温度、管长、单个补偿量改任一参数重算。',
+    };
+  },
+});
+
+// C 高级：弯头占用 + 支架数量与重量
+T.push({
+  board: 'C', level: '高级',
+  variants: [
+    { 行业: '通用', scen: (p) => `车间蒸汽管 DN${p.DN}（De${p.De}）全长 ${p.L} m，中间 1 个 90° 弯（R = ${p.k}D）；支架间距 ${p.s} m，两端固定支架各 1 个，单个支架 ${p.w} kg，管材 ${p.kg} kg/m。`, q: '① 净长？② 支架个数？③ 支架总重与管道自重？④ 能否用管长×每米重代替支架重量？' },
+    { 行业: '化工', scen: (p) => `化工装置管段 DN${p.DN}（De${p.De}）${p.L} m，1 个 90° 弯（R = ${p.k}D），支架间距 ${p.s} m，单重 ${p.w} kg，管材 ${p.kg} kg/m。`, q: '① 净长？② 支架数？③ 两种重量各多少？' },
+    { 行业: '食品', scen: (p) => `食品车间不锈钢管 DN${p.DN}（De${p.De}）${p.L} m，1 个 90° 卫生弯（R = ${p.k}D），支架间距 ${p.s} m。`, q: '① 净长？② 支架数量？③ 支架总重？' },
+    { 行业: '制药', scen: (p) => `洁净区管道 DN${p.DN}（De${p.De}）${p.L} m，1 个 90° 弯（R = ${p.k}D），支吊架间距 ${p.s} m。`, q: (pp) => `① 净长？② 支架数？③ 单重 ${pp.w} kg 时总重？` },
+  ],
+  params: [
+    { DN: 150, De: 159, L: 40, k: 1.5, s: 4, w: 5.6, kg: 18.5 },
+    { DN: 100, De: 108, L: 36, k: 1.5, s: 3.5, w: 3.2, kg: 12.3 },
+    { DN: 200, De: 219, L: 55, k: 1.5, s: 4.5, w: 7.8, kg: 31.5 },
+    { DN: 80, De: 89, L: 28, k: 2, s: 3, w: 2.4, kg: 8.4 },
+  ],
+  make(p) {
+    const occ = 2 * p.k * p.De / 1000;
+    const net = r2(p.L - occ);
+    const n = Math.ceil(net / p.s) + 1;
+    const wAll = r1(n * p.w), pipe = r1(net * p.kg);
+    return {
+      公式依据: ['弯头占用 = 2×R = 2kD', '净长 = 总长 − 弯头占用', '支架数 = ⌈净长÷间距⌉ + 1', '支架总重 = 个数×单重；管道自重 = 净长×每米重'],
+      分步计算: [
+        `步骤1：占用 = 2×${p.k}×${p.De} = ${r1(occ * 1000)} mm = ${occ} m；净长 = ${p.L} − ${occ} = ${net} m。`,
+        `步骤2：n = ⌈${net} ÷ ${p.s}⌉ + 1 = ${Math.ceil(net / p.s)} + 1 = ${n} 个。`,
+        `步骤3：支架总重 = ${n}×${p.w} = ${wAll} kg。`,
+        `步骤4：管道自重 = ${net}×${p.kg} = ${pipe} kg；两者口径不同，不能互相替代。`,
+      ],
+      答案: `净长 ${net} m；支架 ${n} 个、总重 ${wAll} kg；管道自重 ${pipe} kg`,
+      易错点: '① 忘扣弯头占用；② 支架不取整/不加两端；③ 用管长×每米重当支架重量。',
+      变式建议: '管长、间距、弯头数改任一参数重算。',
+    };
+  },
+});
+
+// D 初级：Q = A·v
+T.push({
+  board: 'D', level: '初级',
+  variants: [
+    { 行业: '通用', scen: (p) => `DN${p.DN} 给水钢管 De${p.De}×${p.d}，管内流速 ${p.v} m/s。`, q: '求体积流量 Q，分别用 m³/s 和 m³/h 表示。' },
+    { 行业: '化工', scen: (p) => `化工物料管 De${p.De}×${p.d}，流速 ${p.v} m/s。`, q: '① 内径？② 体积流量 m³/h？' },
+    { 行业: '食品', scen: (p) => `食品输送管 De${p.De}×${p.d}，流速 ${p.v} m/s。`, q: '① 内径？② 流量 m³/h？' },
+    { 行业: '制药', scen: (p) => `纯化水管 De${p.De}×${p.d}，循环流速 ${p.v} m/s。`, q: '① 内径？② 流量 m³/h？' },
+  ],
+  params: [
+    { DN: 100, De: 108, d: 4, v: 1.2 },
+    { DN: 50, De: 57, d: 3.5, v: 1.5 },
+    { DN: 200, De: 219, d: 6, v: 1.0 },
+    { DN: 25, De: 32, d: 2.5, v: 0.9 },
+  ],
+  make(p) {
+    const Di = p.De - 2 * p.d;
+    const A = Math.PI * (Di / 1000) ** 2 / 4;
+    const Q = A * p.v;
+    return {
+      公式依据: ['Q = A·v', 'A = πD内²/4', '1 m³/s = 3 600 m³/h'],
+      分步计算: [
+        `步骤1：内径 = ${p.De} − 2×${p.d} = ${Di} mm。`,
+        `步骤2：A = π×${r2(Di / 1000)}²/4 = ${A.toExponential(3)} m²。`,
+        `步骤3：Q = ${A.toExponential(3)}×${p.v} = ${Q.toExponential(3)} m³/s。`,
+        `步骤4：换算 = ${Q.toExponential(3)}×3 600 = ${r2(Q * 3600)} m³/h。`,
+      ],
+      答案: `${Q.toExponential(3)} m³/s，即 ${r2(Q * 3600)} m³/h`,
+      易错点: '① 用外径算面积；② 忘乘 3 600；③ 用直径当半径。',
+      变式建议: '流速、壁厚改任一参数重算。',
+    };
+  },
+});
+
+// D 中级：坡度与标高
+T.push({
+  board: 'D', level: '中级',
+  variants: [
+    { 行业: '通用', scen: (p) => `DN50 污水横支管，标准坡度 ${p.i}，管段长 ${p.L} m，起点管底标高 −0.800 m；检查井接口允许最高 −${p.limit} m。`, q: '① 终点标高？② 是否满足接口要求？' },
+    { 行业: '化工', scen: (p) => `化工污水管坡度 ${p.i}，长 ${p.L} m，起点标高 −0.800 m，接口允许最高 −${p.limit} m。`, q: '① 终点标高？② 判定是否满足。' },
+    { 行业: '食品', scen: (p) => `食品车间排水横管坡度 ${p.i}，长 ${p.L} m，起点 −0.800 m，接口最高 −${p.limit} m。`, q: '① 终点标高？② 是否需跌水？' },
+    { 行业: '制药', scen: (p) => `制药废水管坡度 ${p.i}，长 ${p.L} m，起点 −0.800 m，接口允许 −${p.limit} m。`, q: '① 终点标高？② 判定并说明处理。' },
+  ],
+  params: [
+    { i: 0.035, L: 20, limit: 1.5 },
+    { i: 0.026, L: 30, limit: 1.6 },
+    { i: 0.035, L: 30, limit: 2.25 },
+    { i: 0.05, L: 15, limit: 1.9 },
+  ],
+  make(p) {
+    const drop = r2(p.i * p.L);
+    const end = r2(-0.8 - drop);
+    const need = end <= -p.limit;
+    return {
+      公式依据: ['h = i·L', '终点标高 = 起点标高 − h', '接口标高不得高于允许值'],
+      分步计算: [
+        `步骤1：h = ${p.i}×${p.L} = ${drop} m。`,
+        `步骤2：终点标高 = −0.800 − ${drop} = ${end} m。`,
+        `步骤3：接口允许最高 −${p.limit} m，终点 ${end} m ${need ? '≤' : '>'} −${p.limit} m，${need ? '满足' : '不满足，需设跌水井或调整坡度'}。`,
+      ],
+      答案: `终点 ${end} m；${need ? '满足' : '不满足（需跌水井/调整）'}`,
+      易错点: '① 坡度按百分数放大；② 标高加减反；③ 不校核接口约束。',
+      变式建议: '坡度、长度、允许标高改任一参数重算。',
+    };
+  },
+});
+
+// D 高级：流水工期
+T.push({
+  board: 'D', level: '高级',
+  variants: [
+    { 行业: '通用', scen: (p) => `排水立管分 ${p.n} 个施工段，${p.m} 个专业班组流水施工，流水步距 K = ${p.K} d，单段作业 t = ${p.t} d；要求 ${p.due} d 内完成。`, q: (pp) => `① 总工期？② 能否按期完成？③ 若班组加到 ${pp.m + 1} 个，工期变成多少？` },
+    { 行业: '化工', scen: (p) => `化工装置管道安装 ${p.n} 段，${p.m} 个班组，K = ${p.K} d，t = ${p.t} d，合同工期 ${p.due} d。`, q: '① 工期？② 是否满足合同？③ 增加班组是否有效？' },
+    { 行业: '食品', scen: (p) => `食品厂管线改造 ${p.n} 段，${p.m} 个班组流水，K = ${p.K} d、t = ${p.t} d，停产窗口 ${p.due} d。`, q: '① 工期？② 是否在停产窗口内？' },
+    { 行业: '制药', scen: (p) => `制药洁净管道 ${p.n} 段，${p.m} 个班组，K = ${p.K} d、t = ${p.t} d，验证前工期 ${p.due} d。`, q: '① 工期？② 是否满足？③ 加 1 个班组后？' },
+  ],
+  params: [
+    { n: 5, m: 3, K: 4, t: 3, due: 23 },
+    { n: 6, m: 2, K: 3, t: 2, due: 20 },
+    { n: 4, m: 3, K: 2, t: 3, due: 15 },
+    { n: 8, m: 2, K: 2, t: 2, due: 20 },
+  ],
+  make(p) {
+    const T1 = (p.n - 1) * p.K + p.m * p.t;
+    const T2 = (p.n - 1) * p.K + (p.m + 1) * p.t;
+    return {
+      公式依据: ['T = (n−1)K + m·t', '增加班组只增加最后一段作业时间，不缩短流水步距'],
+      分步计算: [
+        `步骤1：T = (${p.n}−1)×${p.K} + ${p.m}×${p.t} = ${(p.n - 1) * p.K} + ${p.m * p.t} = ${T1} d。`,
+        `步骤2：${T1} d ${T1 <= p.due ? '≤' : '>'} ${p.due} d，${T1 <= p.due ? '满足' : '不满足'}。`,
+        `步骤3：班组加到 ${p.m + 1} 个：T = ${(p.n - 1) * p.K} + ${(p.m + 1) * p.t} = ${T2} d，反而更长。`,
+        `步骤4：判定：受流水步距控制，加人不一定缩短工期。`,
+      ],
+      答案: `工期 ${T1} d；${T1 <= p.due ? '满足' : '不满足'}；加 1 个班组后 ${T2} d`,
+      易错点: '① 忘减 1；② 把 K 与 t 混用；③ 认为加人必然缩短工期。',
+      变式建议: 'n、m、K、t 改任一参数重算。',
+    };
+  },
+});
+
+// E 初级：小单线图
+T.push({
+  board: 'E', level: '初级',
+  variants: [
+    { 行业: '通用', scen: (p) => `单线图：DN${p.DN} 钢管（De${p.De}×${p.d}）自 A 向东 ${p.a} mm，转 90° 向南 ${p.b} mm 至 B；90° 弯 1 个（R = 1.5D），支架间距 ${p.s} m。`, q: '依次计算：① 总中心线长度；② 弯头占用；③ 净下料；④ 支架数量。' },
+    { 行业: '化工', scen: (p) => `化工管段：De${p.De}×${p.d} 自 A 向东 ${p.a}、转 90° 向南 ${p.b}，1 个弯（R = 1.5D），支架间距 ${p.s} m。`, q: '① 总长？② 弯头占用？③ 净下料？④ 支架数？' },
+    { 行业: '食品', scen: (p) => `食品车间管路：De${p.De}×${p.d} 东 ${p.a}、转 90° 南 ${p.b}，1 个卫生弯（R = 1.5D），支架间距 ${p.s} m。`, q: '① 总长？② 弯头占用？③ 净下料？④ 支架数？' },
+    { 行业: '制药', scen: (p) => `洁净区管路：De${p.De}×${p.d} 东 ${p.a}、转 90° 南 ${p.b}，1 个弯（R = 1.5D），支吊架间距 ${p.s} m。`, q: '① 总长？② 弯头占用？③ 净下料？④ 支架数？' },
+  ],
+  params: [
+    { DN: 100, De: 108, d: 4, a: 2000, b: 1500, s: 3 },
+    { DN: 50, De: 57, d: 3.5, a: 1800, b: 1200, s: 2 },
+    { DN: 150, De: 159, d: 4.5, a: 3000, b: 2400, s: 4 },
+  ],
+  make(p) {
+    const total = (p.a + p.b) / 1000;
+    const occ = r1(2 * 1.5 * p.De / 1000 * 100) / 100;
+    const net = r2(total - occ);
+    const n = Math.ceil(total / p.s) + 1;
+    return {
+      公式依据: ['总长 = 各段中心距之和', '90° 弯占用 = 2R = 3D', '净下料 = 总长 − 弯头占用', '支架数 = ⌈总长÷间距⌉ + 1'],
+      分步计算: [
+        `步骤1：总长 = ${p.a} + ${p.b} = ${p.a + p.b} mm = ${total} m。`,
+        `步骤2：R = 1.5×${p.De} = ${1.5 * p.De} mm，占用 = 2×${1.5 * p.De} = ${3 * p.De} mm = ${occ} m。`,
+        `步骤3：净下料 = ${total} − ${occ} = ${net} m。`,
+        `步骤4：支架 = ⌈${total}÷${p.s}⌉ + 1 = ${Math.ceil(total / p.s)} + 1 = ${n} 个。`,
+      ],
+      答案: `总长 ${total} m；弯头占用 ${occ} m；净下料 ${net} m；支架 ${n} 个`,
+      易错点: '① 净下料忘扣弯头；② 支架不取整；③ 用 DN 代替外径。',
+      变式建议: '段长、管径、间距改任一参数重算。',
+    };
+  },
+});
+
+// E 中级：综合算量（含 45° 斜段与立管）
+T.push({
+  board: 'E', level: '中级',
+  variants: [
+    { 行业: '通用', scen: (p) => `单线图：De${p.De}×${p.d} 东 ${p.a}、南 ${p.b}、45° 斜段 ${p.c}（斜段实长）、立管 ${p.e}；弯头：90°×2、45°×1（均 R = 1.5D）；支架间距 4.5 m。`, q: '① 总中心线；② 弯头数；③ 净下料；④ 支架数。' },
+    { 行业: '化工', scen: (p) => `化工管段 De${p.De}×${p.d}：水平 ${p.a}+${p.b}、45° 斜段 ${p.c}、立管 ${p.e}，90° 弯 2 个、45° 弯 1 个（R = 1.5D）。`, q: '① 总长？② 弯头占用？③ 净下料？④ 支架数？' },
+    { 行业: '食品', scen: (p) => `食品车间管路 De${p.De}×${p.d}：三段水平 ${p.a}/${p.b}/${p.e}、45° 斜段 ${p.c}，90° 弯 2 个、45° 弯 1 个。`, q: '① 总长？② 净下料？③ 支架数（间距 4.5 m）？' },
+    { 行业: '制药', scen: (p) => `洁净管路 De${p.De}×${p.d}：水平 ${p.a}、${p.b}、斜段 ${p.c}、立管 ${p.e}，弯头 90°×2、45°×1（R = 1.5D）。`, q: '① 总长？② 弯头占用？③ 净下料？④ 支架数？' },
+  ],
+  params: [
+    { De: 108, d: 4, a: 6000, b: 4000, c: 3000, e: 3900 },
+    { De: 89, d: 4, a: 4500, b: 3000, c: 2500, e: 3000 },
+    { De: 159, d: 4.5, a: 8000, b: 5000, c: 4000, e: 4500 },
+  ],
+  make(p) {
+    const total = r2((p.a + p.b + p.c + p.e) / 1000);
+    const R = 1.5 * p.De / 1000;
+    const occ = r2(2 * (2 * R) + 2 * R * 0.828);
+    const net = r2(total - occ);
+    const horiz = (p.a + p.b + p.c) / 1000;
+    const n = Math.ceil(horiz / 4.5) + Math.ceil(p.e / 1000 / 4.5);
+    return {
+      公式依据: ['45° 斜段已给实长，不再乘 1.414', '90° 弯占用 2R、45° 弯占用 0.828R', '支架数 = 水平段/间距 + 立管/间距'],
+      分步计算: [
+        `步骤1：总长 = ${p.a} + ${p.b} + ${p.c} + ${p.e} = ${total} m（斜段为实长）。`,
+        `步骤2：R = 1.5×${p.De} = ${1.5 * p.De} mm；90° 两个占 ${r2(2 * (2 * R))} m，45° 占 ${r2(2 * R * 0.828)} m。`,
+        `步骤3：净下料 = ${total} − ${occ} = ${net} m。`,
+        `步骤4：支架 = ⌈${horiz}/4.5⌉ + ⌈${p.e / 1000}/4.5⌉ = ${n} 个。`,
+      ],
+      答案: `总长 ${total} m；弯头占用 ${occ} m；净下料 ${net} m；支架 ${n} 个`,
+      易错点: '① 斜段再乘 1.414；② 90° 只扣单端；③ 支架漏立管。',
+      变式建议: '管径、段长改任一参数重算。',
+    };
+  },
+});
+
+// E 高级：泵房综合（三通 + 流速）
+T.push({
+  board: 'E', level: '高级',
+  variants: [
+    { 行业: '通用', scen: (p) => `泵房 DN${p.DN} 出口管（De${p.De}×${p.d}）：水平 ${p.a}、45° 斜段水平偏距 ${p.off}（斜长 ${p.c}）、立管 ${p.e}、三通支管 ${p.t}；90° 弯 2 个、45° 弯 1 个（R = 1.5D）、等径三通 1 个（按 1 个外径计占用）；支架间距 4.5 m；流量 ${p.Q} m³/h，泵出口流速宜 1.5～2.0 m/s。`, q: '① 总长与净下料？② 支架数？③ 实际流速？④ 判定是否合适。' },
+    { 行业: '化工', scen: (p) => `化工泵出口 DN${p.DN}（De${p.De}×${p.d}）：水平 ${p.a}、斜段 ${p.c}、立管 ${p.e}、三通支管 ${p.t}，流量 ${p.Q} m³/h；弯头 R = 1.5D。`, q: '① 净下料？② 支架数？③ 流速？④ 是否在 1.5～2.0 m/s？' },
+    { 行业: '食品', scen: (p) => `食品厂输送泵 DN${p.DN}（De${p.De}×${p.d}）：水平 ${p.a}、斜段 ${p.c}、立管 ${p.e}、支管 ${p.t}，流量 ${p.Q} m³/h，卫生管弯头 R = 1.5D。`, q: '① 净下料？② 支架数？③ 流速？④ 判定。' },
+    { 行业: '制药', scen: (p) => `制药输送泵 DN${p.DN}（De${p.De}×${p.d}）：水平 ${p.a}、斜段 ${p.c}、立管 ${p.e}、三通支管 ${p.t}，流量 ${p.Q} m³/h。`, q: '① 总长与净下料？② 支架数？③ 流速？④ 判定是否符合 1.5～2.0 m/s。' },
+  ],
+  params: [
+    { DN: 200, De: 219, d: 6, a: 8000, off: 1200, c: 1697, e: 4500, t: 3000, Q: 25 },
+    { DN: 100, De: 108, d: 4, a: 6000, off: 900, c: 1273, e: 3500, t: 2500, Q: 18 },
+    { DN: 150, De: 159, d: 4.5, a: 10000, off: 1500, c: 2121, e: 5000, t: 4000, Q: 60 },
+  ],
+  make(p) {
+    const total = r2((p.a + p.c + p.e + p.t) / 1000);
+    const R = 1.5 * p.De;
+    const occ90 = 2 * 2 * R / 1000;
+    const occ45 = 2 * R * 0.414 / 1000;
+    const occT = p.De / 1000;
+    const net = r2(total - occ90 - occ45 - occT);
+    const Di = (p.De - 2 * p.d) / 1000;
+    const A = Math.PI * Di * Di / 4;
+    const v = r2((p.Q / 3600) / A);
+    const n = Math.ceil(p.a / 1000 / 4.5) + 1 + 1 + Math.ceil(p.t / 1000 / 4.5);
+    return {
+      公式依据: ['弯头占用：90° 2R、45° 0.414R（单端）', '三通按 1 个外径计占用', 'v = Q/A，Q(m³/h)÷3 600 = m³/s'],
+      分步计算: [
+        `步骤1：总长 = ${p.a} + ${p.c} + ${p.e} + ${p.t} = ${total * 1000} mm = ${total} m。`,
+        `步骤2：占用：90° ${r2(occ90)} + 45° ${r2(occ45)} + 三通 ${occT} = ${r2(occ90 + occ45 + occT)} m。`,
+        `步骤3：净下料 = ${total} − ${r2(occ90 + occ45 + occT)} = ${net} m。`,
+        `步骤4：支架 = ⌈${p.a / 1000}/4.5⌉ + 斜段 1 + 立管 1 + ⌈${p.t / 1000}/4.5⌉ = ${n} 个。`,
+        `步骤5：内径 ${p.De - 2 * p.d} mm，A = ${A.toExponential(3)} m²；v = ${p.Q}/3 600/${A.toExponential(3)} = ${v} m/s。`,
+        `步骤6：判定：${v < 1.5 ? `低于 1.5 m/s，管径偏大（或流量偏小），宜缩径` : v > 2.0 ? `高于 2.0 m/s，阻力与磨损偏大，宜放大管径` : `在 1.5～2.0 m/s，合适`}。`,
+      ],
+      答案: `总长 ${total} m；净下料 ${net} m；支架 ${n} 个；流速 ${v} m/s（${v < 1.5 ? '偏低，宜缩径' : v > 2.0 ? '偏高，宜放大' : '合适'}）`,
+      易错点: '① 斜段再乘 1.414；② 三通不扣或扣错（按 2 个外径）；③ 支架漏斜段/立管；④ 用外径算流速。',
+      变式建议: '流量、管径改任一参数重算；或问缩径到 DN 多少可使流速达标。',
+    };
+  },
+});
+
+/* ---------------- 对外接口 ---------------- */
+function listTemplates() {
+  return T.map((t) => ({ board: t.board, level: t.level, n: t.params.length }));
+}
+
+function makeDaily(dateStr) {
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : new Date().toISOString().slice(0, 10);
+  return T.map((t, i) => {
+    const seed = hash(day + '#' + t.board + t.level + '#' + i);
+    const rnd = rng(seed);
+    const pi = Math.floor(rnd() * t.params.length);
+    const vi = Math.floor(rnd() * t.variants.length);
+    const p = t.params[pi];
+    const v = t.variants[vi];
+    const core = t.make(p);
+    return {
+      id: `D${String(i + 1).padStart(2, '0')}`,
+      行业: v.行业,
+      板块: `${t.board}-${{
+        A: '识图与尺寸换算', B: '下料展开', C: '安装与受力', D: '系统参数', E: '综合识图算量',
+      }[t.board]}`,
+      难度: t.level,
+      题型: '每日新题',
+      场景: typeof v.scen === 'function' ? v.scen(p) : v.scen,
+      题干: typeof v.q === 'function' ? v.q(p) : v.q,
+      公式依据: core.公式依据,
+      分步计算: core.分步计算,
+      答案: core.答案,
+      易错点: core.易错点,
+      变式建议: core.变式建议,
+      来源: 'daily',
+      日期: day,
+    };
+  });
+}
+
+window.makeDaily = makeDaily;
+})();
+const STORE_KEY = 'pg-bank-v3';
+const BOARDS = {A:'识图换算',B:'下料展开',C:'安装受力',D:'系统参数',E:'综合算量'};
+const LEVELS = ['初级','中级','高级'];
+</script>
+<script>
+/* ============ 状态 ============ */
+const state = {
+  board: 'all',
+  level: 'all',
+  industry: 'all',
+  daily: [],
+  dailyDate: '',
+  source: '内置',
+  cards: {},          // id -> {status:'ok'|'bad', mine:'', starred:bool}
+  exam: null,         // {ids:[], idx:0, start:ts, answers:{}}
+};
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { saved = {}; }
+if (saved.cards) state.cards = saved.cards;
+const qById = (id) => BANKS.find((q) => q.id === id) || state.daily.find((q) => q.key === id || q.id === id);
+const todayStr = () => {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+};
+const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify({cards: state.cards})); } catch (e) {} };
+
+/* ============ 工具 ============ */
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const toastEl = document.getElementById('toast');
+let toastTimer = 0;
+function toast(msg) {
+  toastEl.textContent = msg; toastEl.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('on'), 4000);
+}
+function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+
+/* 数字提取与容错比对 */
+const SUP = {'⁰':0,'¹':1,'²':2,'³':3,'⁴':4,'⁵':5,'⁶':6,'⁷':7,'⁸':8,'⁹':9};
+function numList(str) {
+  let t = String(str).replace(/[−–—]/g, '-');
+  // 数字之间的空格：若是“三位一组”的千分位则取消空格，否则视为分隔
+  t = t.replace(/(\d) (?=(\d{3})(?![\d.]))/g, '$1');
+  t = t.replace(/(\d) (?=\d)/g, '$1|');
+  t = t.replace(/([\d.])(?=[^\d.|\s])/g, '$1|');
+  const out = [];
+  for (const m of t.split(/[|\s]+/).join(' ').matchAll(/-?\d+(?:\.\d+)?/g)) out.push(parseFloat(m[0]));
+  const SUP = {'⁰':0,'¹':1,'²':2,'³':3,'⁴':4,'⁵':5,'⁶':6,'⁷':7,'⁸':8,'⁹':9};
+  for (const m of t.matchAll(/(\d+(?:\.\d+)?)[×x]\s*10\s*([⁻-]?)([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g)) {
+    const e = parseInt([...m[3]].map((c) => SUP[c]).join(''), 10);
+    out.push(parseFloat(m[1]) * 10 ** (m[2] ? -e : e));
+  }
+  for (const m of t.matchAll(/(\d+(?:\.\d+)?)[×x]\s*10\s*([-−]?)(\d+)(?![⁰¹²³⁴⁵⁶⁷⁸⁹])/g)) {
+    out.push(parseFloat(m[1]) * 10 ** (m[2] ? -parseInt(m[3], 10) : parseInt(m[3], 10)));
+  }
+  return out;
+}
+const norm = s => String(s).toLowerCase().replace(/[，。；：、（）()【】\s]/g, '').replace(/[−–—]/g, '-');
+/* 判分策略（防蒙）：
+   · 答案中每个不同数值视为一个“得分点”（支持 17 800 这类空格千分位、1.2×10⁻⁵ 这类科学计数）；
+   · 只写一个数：命中任一得分点即算对（允许只答结论）；
+   · 写多个值：命中数 ≥2 且覆盖率 ≥50%，才判对；
+   · 纯文字答案（无数字）：按文本包含判断。 */
+function uniqNums(str) {
+  return numList(str).filter((v, i, a) => a.findIndex((x) => Math.abs(x - v) < 1e-9) === i);
+}
+function checkAnswer(input, q) {
+  const mine = norm(input);
+  if (!mine) return false;
+  const ansRaw = String(q.答案);
+  const ans = uniqNums(ansRaw);
+  const my = uniqNums(input);
+  if (!my.length) return norm(ansRaw).includes(mine) && mine.length >= 2;
+  const eq = (a, b) => Math.abs(a - b) <= Math.max(0.01, Math.abs(a) * 0.005);
+  const matched = my.filter((b) => ans.some((a) => eq(a, b))).length;
+  if (!ans.length) return true;
+  if (my.length === 1) return matched === 1;
+  if (matched < 2 || matched / my.length < 0.5) return false;
+  const covered = ans.filter((a) => my.some((b) => eq(a, b))).length;
+  return covered / ans.length >= 0.5;
+}
+
+/* ============ 渲染：题库 ============ */
+const grid = document.getElementById('grid');
+function visibleList() {
+  return BANKS.filter(q =>
+    (state.board === 'all' || q.板块[0] === state.board) &&
+    (state.level === 'all' || q.难度 === state.level) &&
+    (state.industry === 'all' || q.行业 === state.industry)
+  );
+}
+function cardHTML(q) {
+  const key = q.key || q.id;
+  const rec = state.cards[key] || {};
+  const st = rec.status;
+  const lv = LEVELS.indexOf(q.难度);
+  return `<article class="card ${st === 'ok' ? 'done-ok' : st === 'bad' ? 'done-bad' : ''}" data-id="${key}">
+    <div class="card-head">
+      <span class="qid">${q.id}</span>
+        ${q.行业 && q.行业 !== '通用' ? `<span class="pill ind">${esc(q.行业)}</span>` : ''}
+      <span class="pill ${q.板块[0]}">${esc(q.板块)}</span>
+      <span class="pill lv${lv}">${q.难度}</span>
+      <span class="tag">${esc(q.题型)}</span>
+      <button class="star ${rec.starred ? 'on' : ''}" data-star="${key}" title="标记重点">★</button>
+    </div>
+    <div class="scene"><b style="color:var(--ink2)">场景</b>　${esc(q.场景)}</div>
+    <div class="stem">${esc(q.题干)}</div>
+    <div class="ansrow">
+      <input data-input="${key}" placeholder="写下你的答案（数值+单位，可只写结论）" value="${esc(rec.mine || '')}">
+      <button class="btn sm primary" data-check="${key}">核对</button>
+      <button class="reveal" data-reveal="${key}">展开解析</button>
+      <span class="verdict ${st === 'ok' ? 'ok' : st === 'bad' ? 'bad' : ''}" data-verdict="${key}">${st === 'ok' ? '✓ 答对' : st === 'bad' ? '✗ 再想想' : ''}</span>
+    </div>
+    <div class="ops">
+      <button class="selfcheck" data-self="${key}">我算对了，标记为掌握</button>
+    </div>
+    <div class="detail" data-detail="${key}">
+      <div class="ansbox"><div class="k">参考答案</div><div class="v">${esc(q.答案)}</div></div>
+      <div class="sec formula"><h4>公式依据</h4><ul>${q.公式依据.map(f => `<li>${esc(f)}</li>`).join('')}</ul></div>
+      <div class="sec"><h4>分步计算</h4><ul>${q.分步计算.map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+      <div class="trap"><b>易错点</b>　${esc(q.易错点)}</div>
+      <div class="var"><b style="color:var(--ink2)">变式建议</b>　${esc(q.变式建议)}</div>
+    </div>
+  </article>`;
+}
+function layoutCard(card) {
+  if (!card) return;
+  if (!card.offsetParent) return; // 视图隐藏时不测量，避免把高度记成 0
+  card.style.gridRowEnd = 'auto';
+  // 等样式（展开/收起）落地后再量，避免量到旧高度导致内容重叠
+  requestAnimationFrame(() => {
+    if (!card.offsetParent || !card.isConnected) return;
+    const h = card.scrollHeight + 2;
+    card.style.gridRowEnd = `span ${Math.max(1, Math.ceil(h / 18))}`;
+  });
+}
+function layoutAll() {
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.card').forEach((c) => {
+      c.style.gridRowEnd = 'auto';
+    });
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.card').forEach((c) => {
+        const h = c.scrollHeight + 2;
+        c.style.gridRowEnd = `span ${Math.max(1, Math.ceil(h / 18))}`;
+      });
+    });
+  });
+}
+function renderBank() {
+  const list = visibleList();
+  grid.innerHTML = list.map(cardHTML).join('');
+  document.getElementById('resultMeta').textContent = `当前 ${list.length} 题`;
+  requestAnimationFrame(layoutAll);
+  updateStats();
+}
+function dayIndex(dateStr) {
+  const t = new Date(dateStr + 'T00:00:00').getTime();
+  const base = new Date('2026-01-01T00:00:00').getTime();
+  return Math.max(1, Math.round((t - base) / 86400000) + 1);
+}
+function renderDaily() {
+  const el = document.getElementById('dailyGrid');
+  if (!el) return;
+  el.innerHTML = state.daily.map(cardHTML).join('');
+  document.getElementById('dailyDate').textContent = `${state.dailyDate} · 第 ${dayIndex(state.dailyDate)} 期`;
+  document.getElementById('tabDailyN').textContent = state.daily.length;
+  requestAnimationFrame(layoutAll);
+  updateStats();
+}
+async function loadRemote() {
+  const src = document.getElementById('dailySrc');
+  const setSrc = (txt, offline) => {
+    src.textContent = txt;
+    src.classList.toggle('offline', !!offline);
+  };
+  const urls = [
+    `api/daily?date=${state.dailyDate}`,
+    `daily.json?date=${state.dailyDate}`,
+    `bank.json?ts=${Date.now()}`,
+  ];
+  for (const url of urls) {
+    try {
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) continue;
+      const j = await r.json();
+      if (j && j.questions && j.questions.length) {
+        state.dailyDate = j.date || state.dailyDate;
+        state.daily = j.questions.map((q) => ({ ...q, key: `${state.dailyDate}-${q.id}` }));
+        state.source = '在线';
+        if (j.bank && j.bank.length) BANKS = j.bank;
+        renderDaily(); renderBank();
+        setSrc(`在线 · ${state.dailyDate}`, false);
+        return;
+      }
+      if (j && j.bank && j.bank.length && String(j.version || '') > BUILD_VERSION) {
+        BANKS = j.bank;
+        renderBank();
+        state.source = '在线';
+        setSrc(`在线题库 · ${j.bank.length} 题`, false);
+        return;
+      }
+      if (Array.isArray(j) && j.length) {
+        BANKS = j;
+        renderBank();
+        state.source = '在线';
+        setSrc(`在线题库 · ${j.length} 题`, false);
+        return;
+      }
+    } catch (e) { /* 继续尝试下一个源 */ }
+  }
+  state.source = '内置';
+  setSrc('内置生成 · 离线可用', true);
+}
+
+/* ============ 交互 ============ */
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  const id = t.dataset.check || t.dataset.reveal || t.dataset.self || t.dataset.star;
+  if (!id) return;
+  const card = t.closest('.card');
+  if (!card) return;
+  if (t.dataset.star) {
+    const rec = state.cards[id] || {};
+    rec.starred = !rec.starred;
+    state.cards[id] = rec; save(); t.classList.toggle('on'); updateStats(); return;
+  }
+  if (t.dataset.reveal) {
+    const d = card.querySelector(`[data-detail="${id}"]`);
+    d.classList.toggle('on');
+    t.textContent = d.classList.contains('on') ? '收起解析' : '展开解析';
+    layoutCard(card);
+    return;
+  }
+  const input = card.querySelector(`[data-input="${id}"]`);
+  if (t.dataset.self) {
+    const rec = state.cards[id] || {};
+    rec.status = 'ok'; rec.mine = input.value || rec.mine || '（自评掌握）';
+    state.cards[id] = rec; save(); refreshCard(id); toast('已标记为掌握'); return;
+  }
+  // 核对
+  const ok = checkAnswer(input.value, qById(id));
+  const rec = state.cards[id] || {};
+  rec.status = ok ? 'ok' : 'bad';
+  rec.mine = input.value;
+  state.cards[id] = rec; save();
+  refreshCard(id);
+  if (ok) { toast('答对了，可以展开解析对照步骤'); }
+});
+function refreshCard(id) {
+  const card = document.querySelector(`[data-id="${id}"]`);
+  if (!card) return;
+  const rec = state.cards[id] || {};
+  card.classList.toggle('done-ok', rec.status === 'ok');
+  card.classList.toggle('done-bad', rec.status === 'bad');
+  const v = card.querySelector(`[data-verdict="${id}"]`);
+  v.className = 'verdict ' + (rec.status === 'ok' ? 'ok' : rec.status === 'bad' ? 'bad' : '');
+  v.textContent = rec.status === 'ok' ? '✓ 答对' : rec.status === 'bad' ? '✗ 再想想' : '';
+  if (rec.status && !card.querySelector(`[data-detail="${id}"]`).classList.contains('on')) {
+    card.querySelector(`[data-detail="${id}"]`).classList.add('on');
+    card.querySelector(`[data-reveal="${id}"]`).textContent = '收起解析';
+    layoutCard(card);
+  }
+  updateStats();
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.matches('input[data-input]')) {
+    const card = e.target.closest('.card');
+    card && card.querySelector(`[data-check="${e.target.dataset.input}"]`).click();
+  }
+});
+
+/* ============ 统计 ============ */
+function stats() {
+  const valid = new Set(BANKS.map((q) => q.id));
+  const done = Object.entries(state.cards).filter(([k, r]) => r.status && valid.has(k));
+  const ok = done.filter(([, r]) => r.status === 'ok').length;
+  const bad = done.length - ok;
+  const starred = Object.values(state.cards).filter(r => r.starred).length;
+  return {done: done.length, ok, bad, starred, total: BANKS.length};
+}
+function updateStats() {
+  const s = stats();
+  document.getElementById('mDone').textContent = s.done;
+  document.getElementById('mAcc').textContent = s.done ? pct(s.ok, s.done) + '%' : '—';
+  document.getElementById('mStar').textContent = s.starred;
+  document.getElementById('todayCnt').textContent = `${s.done} / ${s.total}`;
+  const p = pct(s.done, s.total);
+  const C = 2 * Math.PI * 45;
+  document.getElementById('ringArc').style.strokeDashoffset = C * (1 - p / 100);
+  document.getElementById('ringPct').textContent = p + '%';
+  document.getElementById('rsOk').textContent = s.ok;
+  document.getElementById('rsBad').textContent = s.bad;
+  document.getElementById('tabWrongN').textContent = s.bad;
+  document.getElementById('tabBankN').textContent = BANKS.length;
+  const dDone = state.daily.filter((q) => (state.cards[q.key] || {}).status).length;
+  const dEl = document.getElementById('dailyDone');
+  if (dEl) dEl.textContent = dDone;
+  const dT = document.getElementById('dailyTotal');
+  if (dT) dT.textContent = state.daily.length;
+  // 进度点
+  document.getElementById('dots').innerHTML = BANKS.map(q => {
+    const r = state.cards[q.id];
+    const cls = r && r.status === 'ok' ? 'ok' : r && r.status === 'bad' ? 'bad' : r ? 'done' : '';
+    return `<span class="dot ${cls}" title="${q.id} ${q.难度}"></span>`;
+  }).join('');
+  renderSideViews(s);
+}
+function renderSideViews(s) {
+  // 错题本
+  const allQ = [...BANKS, ...state.daily];
+  const wrong = allQ.filter((q) => {
+    const k = q.key || q.id;
+    return state.cards[k] && state.cards[k].status === 'bad';
+  });
+  const box = document.getElementById('wrongBox');
+  if (!wrong.length) {
+    box.innerHTML = `<div class="panel empty">
+      <div style="font-size:26px">🎯</div>
+      还没有错题。答错的题会自动进这里，方便二刷。<br>
+      <button class="btn sm" style="margin-top:10px" onclick="document.querySelector('[data-view=bank]').click()">去题库练习</button>
+    </div>`;
+  } else {
+    box.innerHTML = `<div class="wrong-list">${wrong.map(q => {
+      const k = q.key || q.id;
+      const rec = state.cards[k] || {};
+      return `<div class="wrong-item">
+        <span class="qid">${q.id}</span>
+      ${q.行业 && q.行业 !== '通用' ? `<span class="pill ind">${esc(q.行业)}</span>` : ''}
+        <span class="pill ${q.板块[0]}">${q.板块}</span>
+        <span class="pill lv${LEVELS.indexOf(q.难度)}">${q.难度}</span>
+        <div class="t">${esc(q.题干)}<br>
+          <span class="mine">我的答案：${esc(rec.mine || '空')}</span>
+          <span class="right">正确：${esc(q.答案)}</span>
+        </div>
+        <button class="btn sm" data-goto="${q.key || q.id}">回看解析</button>
+        <button class="btn sm ghost" data-clear="${q.key || q.id}">移出错题本</button>
+      </div>`;
+    }).join('')}</div>`;
+  }
+  // 统计页
+  const boardRows = ['A', 'B', 'C', 'D', 'E'].map(b => {
+    const qs = BANKS.filter(q => q.板块[0] === b);
+    const d = qs.filter(q => state.cards[q.id] && state.cards[q.id].status);
+    const ok = d.filter(q => state.cards[q.id].status === 'ok').length;
+    const rate = d.length ? pct(ok, d.length) : 0;
+    return `<div class="bar-row"><span>${b} ${BOARDS[b]}</span><span class="bar"><i style="width:${rate}%"></i></span><span class="num">${d.length ? rate + '%' : '—'}</span></div>`;
+  }).join('');
+  document.getElementById('boardStats').innerHTML = boardRows;
+  const levelRows = LEVELS.map(lv => {
+    const qs = BANKS.filter(q => q.难度 === lv);
+    const d = qs.filter(q => state.cards[q.id] && state.cards[q.id].status);
+    const ok = d.filter(q => state.cards[q.id].status === 'ok').length;
+    const rate = d.length ? pct(ok, d.length) : 0;
+    return `<div class="bar-row"><span>${lv}</span><span class="bar"><i class="g" style="width:${rate}%"></i></span><span class="num">${d.length ? rate + '%' : '—'}</span></div>`;
+  }).join('');
+  document.getElementById('levelStats').innerHTML = levelRows;
+  const donut = document.getElementById('donut');
+  donut.style.setProperty('--ok', s.done ? pct(s.ok, s.done) : 0);
+  donut.style.setProperty('--bad', s.done ? pct(s.bad, s.done) : 0);
+  document.getElementById('donutPct').textContent = s.done ? pct(s.ok, s.done) + '%' : '0%';
+  document.getElementById('legend').innerHTML = `
+    <div><i style="background:var(--green)"></i>答对 ${s.ok} 题</div>
+    <div><i style="background:var(--red)"></i>答错 ${s.bad} 题</div>
+    <div><i style="background:var(--line2)"></i>未做 ${s.total - s.done} 题</div>
+    <div style="color:var(--ink3);font-size:12px;margin-top:6px">已标记重点 ${s.starred} 题</div>`;
+  // 建议
+  let tip = '';
+  const weakBoard = ['A','B','C','D','E'].map(b => {
+    const qs = BANKS.filter(q => q.板块[0] === b);
+    const d = qs.filter(q => state.cards[q.id] && state.cards[q.id].status);
+    const ok = d.filter(q => state.cards[q.id].status === 'ok').length;
+    return {b, d: d.length, rate: d.length ? ok / d.length : 1};
+  }).filter(x => x.d >= 1).sort((a, z) => a.rate - z.rate)[0];
+  if (!s.done) tip = '先从 <b>初级</b> 开始，每题只填最终数值；答完立刻展开解析，对照“分步计算”找自己漏掉的那一步。';
+  else if (weakBoard && weakBoard.rate < 0.6) tip = `薄弱板块：<b>${weakBoard.b} ${BOARDS[weakBoard.b]}</b>。把该板块的题重做一遍，重点看“易错点”一栏。`;
+  else tip = '正确率不错。下一步挑战 <b>高级</b> 题，重点练“干扰条件判断”和“净料扣减”，并尝试只凭题干复述公式。';
+  const starred = BANKS.filter(q => state.cards[q.id] && state.cards[q.id].starred);
+  if (starred.length) tip += `<br><br>已标记重点：${starred.map(q => `<a href="#" data-goto="${q.id}" style="color:var(--brand)">${q.id}</a>`).join('、')}`;
+  document.getElementById('advice').innerHTML = tip;
+}
+document.addEventListener('click', (e) => {
+  const g = e.target.closest('[data-goto]');
+  if (g) {
+    e.preventDefault();
+    const id = g.dataset.goto; const q = qById(id);
+    state.board = 'all'; state.level = 'all';
+    syncChips(); showView('bank'); renderBank();
+    const card = grid.querySelector(`[data-id="${id}"]`);
+    if (card) {
+      card.scrollIntoView({behavior: 'smooth', block: 'center'});
+      card.querySelector(`[data-detail="${id}"]`).classList.add('on');
+      card.querySelector(`[data-reveal="${id}"]`).textContent = '收起解析';
+    }
+  }
+  const gv = e.target.closest('[data-goto-view]');
+  if (gv) { e.preventDefault(); showView(gv.dataset.gotoView); return; }
+  const c = e.target.closest('[data-clear]');
+  if (c) {
+    const rec = state.cards[c.dataset.clear];
+    if (rec) { rec.status = ''; rec.mine = ''; }
+    save(); renderSideViews(stats()); refreshCard(c.dataset.clear); toast('已移出错题本');
+  }
+});
+
+/* ============ 筛选 ============ */
+function syncChips() {
+  document.querySelectorAll('[data-board]').forEach(b => b.classList.toggle('on', b.dataset.board === state.board));
+  document.querySelectorAll('[data-level]').forEach(b => b.classList.toggle('on', b.dataset.level === state.level));
+  document.querySelectorAll('[data-industry]').forEach(b => b.classList.toggle('on', b.dataset.industry === state.industry));
+}
+document.getElementById('boardFilter').addEventListener('click', e => {
+  const b = e.target.closest('[data-board]'); if (!b) return;
+  state.board = b.dataset.board; syncChips(); renderBank();
+});
+document.getElementById('levelFilter').addEventListener('click', e => {
+  const b = e.target.closest('[data-level]'); if (!b) return;
+  state.level = b.dataset.level; syncChips(); renderBank();
+});
+document.getElementById('industryFilter').addEventListener('click', e => {
+  const b = e.target.closest('[data-industry]'); if (!b) return;
+  state.industry = b.dataset.industry; syncChips(); renderBank();
+});
+
+/* ============ 易错点清单 ============ */
+document.getElementById('traps').innerHTML = TRAPS.map(t => `
+  <div class="panel trapcard">
+    <div class="no">${t.no}</div>
+    <div style="flex:1">
+      <h3>${esc(t.title)}</h3>
+      <p>${esc(t.body)}</p>
+      <div class="links">${t.qs.map(id => `<button class="linkq" data-goto="${id}">${id}</button>`).join('')}</div>
+    </div>
+  </div>`).join('');
+
+/* ============ 视图切换 ============ */
+function showView(v) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.view === v));
+  document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'view-' + v));
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  requestAnimationFrame(layoutAll);
+}
+document.querySelector('.tabs').addEventListener('click', e => {
+  const t = e.target.closest('.tab'); if (t) showView(t.dataset.view);
+});
+
+/* ============ 随机 / 考试 ============ */
+document.getElementById('btnDailyRefresh').addEventListener('click', async () => {
+  await loadRemote();
+  toast(state.source === '在线' ? '已获取最新题库' : '当前为内置题库（离线可用）');
+});
+document.getElementById('btnRandom').addEventListener('click', () => {
+  const pool = visibleList();
+  const q = pool[Math.floor(Math.random() * pool.length)] || BANKS[0];
+  state.board = q.板块[0]; state.level = 'all'; syncChips(); showView('bank'); renderBank();
+  const card = grid.querySelector(`[data-id="${q.id}"]`);
+  if (card) {
+    card.scrollIntoView({behavior: 'smooth', block: 'center'});
+    card.querySelector('input').focus();
+  }
+});
+const modal = document.getElementById('modal');
+let modalResolve = null;
+function ask(title, text, okText) {
+  document.getElementById('dlgTitle').textContent = title;
+  document.getElementById('dlgText').textContent = text;
+  document.getElementById('dlgOk').textContent = okText;
+  modal.classList.add('on');
+  return new Promise(res => { modalResolve = res; });
+}
+document.getElementById('dlgCancel').onclick = () => { modal.classList.remove('on'); modalResolve && modalResolve(false); };
+document.getElementById('dlgOk').onclick = () => { modal.classList.remove('on'); modalResolve && modalResolve(true); };
+
+let examTimer = 0;
+document.getElementById('btnExam').addEventListener('click', async () => {
+  const ok = await ask('模拟小测', '从 5 个板块 × 3 个难度各抽 1 题，共 15 题，限时 30 分钟。作答即时判分，交卷后给出诊断。', '开始测验');
+  if (!ok) return;
+  const ids = [];
+  for (const b of 'ABCDE') for (const lv of LEVELS) {
+    const pool = BANKS.filter(q => q.板块[0] === b && q.难度 === lv);
+    ids.push(pool[Math.floor(Math.random() * pool.length)].id);
+  }
+  startExam(ids);
+});
+function startExam(ids) {
+  state.exam = {ids, start: Date.now(), done: 0};
+  state.board = 'all'; state.level = 'all'; syncChips();
+  showView('bank'); renderBank();
+  document.getElementById('grid').innerHTML = ids.map(id => cardHTML(qById(id))).join('');
+  document.getElementById('examBar').classList.add('on');
+  document.getElementById('examCount').textContent = `0 / ${ids.length}`;
+  document.getElementById('examProg').style.width = '0%';
+  examTimer = setInterval(tick, 1000); tick();
+  document.getElementById('resultMeta').textContent = `小测进行中 · ${ids.length} 题`;
+}
+function tick() {
+  if (!state.exam) return;
+  const left = 30 * 60 * 1000 - (Date.now() - state.exam.start);
+  const s = Math.max(0, Math.floor(left / 1000));
+  const m = String(Math.floor(s / 60)).padStart(2, '0'), ss = String(s % 60).padStart(2, '0');
+  const el = document.getElementById('timer');
+  el.textContent = `${m}:${ss}`;
+  el.classList.toggle('warn', s < 300);
+  if (left <= 0) submitExam(true);
+}
+function submitExam(auto) {
+  if (!state.exam) return;
+  clearInterval(examTimer);
+  const {ids} = state.exam;
+  const answered = ids.filter(id => state.cards[id] && state.cards[id].status);
+  const ok = answered.filter(id => state.cards[id].status === 'ok').length;
+  const bad = answered.length - ok;
+  state.exam = null;
+  document.getElementById('examBar').classList.remove('on');
+  document.getElementById('resultMeta').textContent = '';
+  renderBank();
+  const byBoard = ['A','B','C','D','E'].map(b => {
+    const qs = ids.map(i => qById(i)).filter(q => q.板块[0] === b);
+    const d = qs.filter(q => state.cards[q.id] && state.cards[q.id].status);
+    const o = d.filter(q => state.cards[q.id].status === 'ok').length;
+    return `${b} ${o}/${qs.length}`;
+  }).join(' · ');
+  ask(auto ? '时间到，已自动交卷' : '交卷',
+    `作答 ${answered.length}/${ids.length} 题，答对 ${ok} 题，答错 ${bad} 题。\n各板块：${byBoard}\n\n未作答按错题处理，可到错题本逐题回看。`,
+    '看诊断');
+  showView('stats');
+}
+document.getElementById('btnSubmitExam').onclick = () => submitExam(false);
+document.getElementById('btnQuitExam').onclick = () => {
+  state.exam = null; clearInterval(examTimer);
+  document.getElementById('examBar').classList.remove('on');
+  renderBank(); showView('bank');
+};
+
+/* ============ 其他 ============ */
+document.getElementById('btnPrint').onclick = () => {
+  // 打印前展开全部解析（题库视图）
+  state.board = 'all'; state.level = 'all'; state.industry = 'all'; syncChips(); renderBank(); showView('bank');
+  document.querySelectorAll('.detail').forEach(d => d.classList.add('on'));
+  setTimeout(() => window.print(), 60);
+};
+document.getElementById('btnReset').onclick = async () => {
+  const ok = await ask('清空记录', '会清空全部作答、标记和错题记录，题库本身不受影响。确定吗？', '清空');
+  if (!ok) return;
+  state.cards = {}; save(); renderBank(); toast('已清空');
+};
+window.addEventListener('keydown', e => {
+  if (e.key === '?' && !e.target.matches('input,textarea')) document.getElementById('btnRandom').click();
+});
+
+let rzTimer = 0;
+window.addEventListener('resize', () => {
+  clearTimeout(rzTimer);
+  rzTimer = setTimeout(layoutAll, 120);
+});
+/* ============ 启动 ============ */
+syncChips();
+state.dailyDate = todayStr();
+state.daily = (typeof makeDaily === 'function' ? makeDaily(state.dailyDate) : []).map((q) => ({ ...q, key: `${state.dailyDate}-${q.id}` }));
+renderDaily();
+renderBank();
+updateStats();
+showView('daily');
+requestAnimationFrame(layoutAll);
+loadRemote();
+</script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

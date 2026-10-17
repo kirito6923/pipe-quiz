@@ -1,0 +1,20 @@
+{
+  "name": "管工计算题库 · 每日卷",
+  "short_name": "管工题库",
+  "description": "管工计算 48 题 + 每日自动生成卷，化工/食品/制药车间场景",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6fa",
+  "theme_color": "#1e5eff",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
