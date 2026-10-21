@@ -593,3 +593,54 @@ export function makeDaily(dateStr) {
     };
   });
 }
+
+/* ---------------- 固定题库池 + 轮换 ---------------- */
+const BOARD_NAMES = { A: '识图与尺寸换算', B: '下料展开', C: '安装与受力', D: '系统参数', E: '综合识图算量' };
+
+// 把模板 × 参数 × 行业固定下来，形成可长期轮换的题库池（每模板 4 道）
+export function buildPool() {
+  const out = [];
+  T.forEach((t) => {
+    const n = Math.min(4, t.params.length);
+    for (let k = 0; k < n; k++) {
+      const p = t.params[k];
+      const v = t.variants[k % t.variants.length];
+      const core = t.make(p);
+      out.push({
+        id: `P${String(out.length + 1).padStart(2, '0')}`,
+        行业: v.行业,
+        板块: `${t.board}-${BOARD_NAMES[t.board]}`,
+        难度: t.level,
+        题型: '题库',
+        场景: typeof v.scen === 'function' ? v.scen(p) : v.scen,
+        题干: typeof v.q === 'function' ? v.q(p) : v.q,
+        公式依据: core.公式依据,
+        分步计算: core.分步计算,
+        答案: core.答案,
+        易错点: core.易错点,
+        变式建议: core.变式建议,
+        来源: 'pool',
+      });
+    }
+  });
+  return out;
+}
+
+// 从题库池按“15 个板块×难度组合各 1 道”抽当日卷；history 传最近 7 天已出过的 id
+export function pickDaily(pool, dateStr, history = []) {
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : new Date().toISOString().slice(0, 10);
+  const used = new Set(history);
+  const groups = {};
+  for (const q of pool) {
+    const k = q.板块[0] + q.难度;
+    (groups[k] = groups[k] || []).push(q);
+  }
+  const keys = Object.keys(groups).sort();
+  const rnd = rng(hash(day + '#pick'));
+  return keys.map((k) => {
+    const all = groups[k];
+    const fresh = all.filter((q) => !used.has(q.id));
+    const cand = fresh.length ? fresh : all;
+    return { ...cand[Math.floor(rnd() * cand.length)] };
+  });
+}
