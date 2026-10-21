@@ -25,6 +25,15 @@ if (!pool.length) {
   process.exit(1);
 }
 
+// 幂等：同一天已经生成过就不改，避免一天内多次运行换题
+try {
+  const old = JSON.parse(fs.readFileSync(dailyFile, 'utf8'));
+  if (old.date === date) {
+    console.log(`${date} 已生成过，跳过`);
+    process.exit(0);
+  }
+} catch (e) { /* 首次 */ }
+
 let hist = { byDate: {} };
 try {
   hist = JSON.parse(fs.readFileSync(histFile, 'utf8'));
